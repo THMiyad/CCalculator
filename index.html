@@ -193,6 +193,146 @@
         }
     </script>
 </body>
+</html>            <button onclick="appendValue('9')">9</button>
+            <button class="operator" onclick="appendValue('/')">÷</button>
+            <button class="operator" onclick="clearDisplay()">C</button>
+
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="operator" onclick="appendValue('*')">×</button>
+            <button class="operator" onclick="backspace()">⌫</button>
+
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="operator" onclick="appendValue('-')">-</button>
+            <button class="operator" onclick="appendValue('+')">+</button>
+
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button class="equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <!-- Menu Modal -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <h3>Advanced Calculator Modes</h3>
+            <select id="modeSelect" onchange="switchMode()">
+                <option value="">-- Select Mode --</option>
+                <option value="base">Base-N Converter</option>
+                <option value="quad">Quadratic Equation (ax²+bx+c=0)</option>
+                <option value="stat">Statistics (Mean, Std Dev)</option>
+                <option value="matrix">Matrix Addition</option>
+                <option value="finance">Financial (Interest)</option>
+            </select>
+            <div id="modeBody"></div>
+            <button class="close-btn" onclick="closeMenu()">Close Menu</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        function appendValue(val) { display.value += val; }
+        function clearDisplay() { display.value = ''; }
+        function backspace() { display.value = display.value.slice(0, -1); }
+        function calculate() {
+            try { display.value = eval(display.value); } catch (e) { display.value = 'Error'; }
+        }
+
+        function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
+        function closeMenu() { document.getElementById('menuModal').style.display = 'none'; }
+
+        function switchMode() {
+            let mode = document.getElementById('modeSelect').value;
+            let body = document.getElementById('modeBody');
+            body.innerHTML = '';
+
+            if (mode === 'base') {
+                body.innerHTML = `
+                    <input type="number" id="decNum" placeholder="Enter Decimal Number">
+                    <button onclick="calcBase()">Convert</button>
+                    <div class="result-box" id="baseRes"></div>`;
+            } else if (mode === 'quad') {
+                body.innerHTML = `
+                    <input type="number" id="qA" placeholder="Enter a">
+                    <input type="number" id="qB" placeholder="Enter b">
+                    <input type="number" id="qC" placeholder="Enter c">
+                    <button onclick="calcQuad()">Solve</button>
+                    <div class="result-box" id="quadRes"></div>`;
+            } else if (mode === 'stat') {
+                body.innerHTML = `
+                    <input type="text" id="statNums" placeholder="Numbers (comma separated, e.g. 10,20,30)">
+                    <button onclick="calcStat()">Calculate</button>
+                    <div class="result-box" id="statRes"></div>`;
+            } else if (mode === 'matrix') {
+                body.innerHTML = `
+                    <input type="text" id="matA" placeholder="Row 1 (e.g. 1,2)">
+                    <input type="text" id="matB" placeholder="Row 2 (e.g. 3,4)">
+                    <button onclick="calcMatrix()">Add Matrices</button>
+                    <div class="result-box" id="matRes"></div>`;
+            } else if (mode === 'finance') {
+                body.innerHTML = `
+                    <input type="number" id="fP" placeholder="Principal">
+                    <input type="number" id="fR" placeholder="Rate %">
+                    <input type="number" id="fT" placeholder="Time (Years)">
+                    <button onclick="calcFinance()">Calculate Interest</button>
+                    <div class="result-box" id="financeRes"></div>`;
+            }
+        }
+
+        function calcBase() {
+            let n = parseInt(document.getElementById('decNum').value);
+            if(isNaN(n)) { document.getElementById('baseRes').innerText = "Invalid input"; return; }
+            document.getElementById('baseRes').innerHTML = `DEC: ${n}<br>HEX: ${n.toString(16).toUpperCase()}<br>OCT: ${n.toString(8)}<br>BIN: ${n.toString(2)}`;
+        }
+
+        function calcQuad() {
+            let a = parseFloat(document.getElementById('qA').value);
+            let b = parseFloat(document.getElementById('qB').value);
+            let c = parseFloat(document.getElementById('qC').value);
+            let d = b*b - 4*a*c;
+            let res = "";
+            if (d >= 0) {
+                let x1 = (-b + Math.sqrt(d)) / (2*a);
+                let x2 = (-b - Math.sqrt(d)) / (2*a);
+                res = `x1 = ${x1.toFixed(4)}<br>x2 = ${x2.toFixed(4)}`;
+            } else {
+                let real = (-b / (2*a)).toFixed(4);
+                let img = (Math.sqrt(-d) / (2*a)).toFixed(4);
+                res = `x1 = ${real} + ${img}i<br>x2 = ${real} - ${img}i`;
+            }
+            document.getElementById('quadRes').innerHTML = res;
+        }
+
+        function calcStat() {
+            let arr = document.getElementById('statNums').value.split(',').map(Number);
+            if(arr.length === 0 || isNaN(arr[0])) { document.getElementById('statRes').innerText = "Invalid data"; return; }
+            let sum = arr.reduce((a,b) => a+b, 0);
+            let mean = sum / arr.length;
+            let variance = arr.reduce((a,b) => a + Math.pow(b - mean, 2), 0) / arr.length;
+            document.getElementById('statRes').innerHTML = `Count: ${arr.length}<br>Sum: ${sum}<br>Mean: ${mean.toFixed(4)}<br>Std Dev: ${Math.sqrt(variance).toFixed(4)}`;
+        }
+
+        function calcMatrix() {
+            let r1 = document.getElementById('matA').value.split(',').map(Number);
+            let r2 = document.getElementById('matB').value.split(',').map(Number);
+            if(r1.length !== r2.length) { document.getElementById('matRes').innerText = "Size mismatch"; return; }
+            let res = r1.map((val, idx) => val + r2[idx]);
+            document.getElementById('matRes').innerText = `Result [${res.join(', ')}]`;
+        }
+
+        function calcFinance() {
+            let p = parseFloat(document.getElementById('fP').value);
+            let r = parseFloat(document.getElementById('fR').value);
+            let t = parseFloat(document.getElementById('fT').value);
+            let si = (p * r * t) / 100;
+            let ci = p * Math.pow((1 + r/100), t) - p;
+            document.getElementById('financeRes').innerHTML = `Simple Interest: ${si.toFixed(2)}<br>Compound Interest: ${ci.toFixed(2)}`;
+        }
+    </script>
+</body>
 </html>            border: none;
             border-radius: 6px;
             background: #3a3a55;
