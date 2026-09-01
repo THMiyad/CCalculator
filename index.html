@@ -17,7 +17,6 @@
         button.menu-btn { background: #d97706; grid-column: span 5; font-size: 15px; padding: 12px; margin-bottom: 6px; font-weight: bold; }
         button.equal { background: #34c759; grid-column: span 2; }
         
-        /* Modal Styles */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: #2b2b40; padding: 22px; border-radius: 12px; width: 360px; max-height: 90vh; overflow-y: auto; border: 1px solid #4a4ae2; }
         .modal-content h3 { margin-bottom: 12px; color: #00ffcc; font-size: 18px; text-align: center; }
@@ -75,7 +74,6 @@
         </div>
     </div>
 
-    <!-- Advanced Menu Modal -->
     <div id="menuModal" class="modal">
         <div class="modal-content">
             <h3>C-Calculator Advanced Modes</h3>
@@ -154,7 +152,7 @@
 
         function calcBase() {
             let n = parseInt(document.getElementById('decNum').value);
-            if(isNaN(n)) { document.getElementById('baseResinnerText = "Please enter a valid number"; return; }
+            if(isNaN(n)) { document.getElementById('baseRes').innerText = "Please enter a valid number"; return; }
             document.getElementById('baseRes').innerHTML = `<b>DEC:</b> ${n}<br><b>HEX:</b> ${n.toString(16).toUpperCase()}<br><b>OCT:</b> ${n.toString(8)}<br><b>BIN:</b> ${n.toString(2)}`;
         }
 
