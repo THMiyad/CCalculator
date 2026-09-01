@@ -3,292 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CASIO fx-991ES PLUS - Scientific Calculator</title>
+    <title>CASIO fx-991ES PLUS</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #181824; color: #fff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #12121c; color: #fff; }
+        .calculator { background: #1b1b28; padding: 16px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); width: 380px; border: 2px solid #33334d; }
+        .brand { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #9ca3af; margin-bottom: 6px; display: flex; justify-content: space-between; }
         
-        /* Casio Body Chassis */
-        .calculator { background: #1e1e2d; padding: 18px; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.8); width: 400px; border: 2px solid #33334d; }
-        .brand { font-size: 13px; font-weight: bold; letter-spacing: 1.5px; color: #b0b0c0; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-        .brand span { font-size: 10px; color: #8888a0; font-weight: normal; }
+        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 3px inset #525e52; }
+        .lcd-top { font-size: 11px; font-family: monospace; min-height: 15px; text-align: right; color: #2d3b2d; }
+        #display { width: 100%; height: 38px; background: transparent; color: #0b140b; font-size: 24px; font-family: monospace; font-weight: bold; text-align: right; border: none; outline: none; }
 
-        /* Casio Dual-Line LCD Display Screen */
-        .lcd-screen { background: #94a394; color: #111a11; padding: 10px 12px; border-radius: 5px; margin-bottom: 12px; border: 4px inset #5c6b5c; }
-        .lcd-top { font-size: 12px; font-family: 'Courier New', Courier, monospace; min-height: 16px; text-align: right; color: #2d3b2d; overflow-x: auto; white-space: nowrap; }
-        #display { width: 100%; height: 42px; background: transparent; color: #0a140a; font-size: 26px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
-
-        /* Keypad Grid Layout matching Casio Style */
         .buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
-        button { padding: 10px 2px; font-size: 12px; cursor: pointer; border: none; border-radius: 4px; background: #2e2e42; color: #e0e0f0; font-weight: 600; transition: 0.1s; }
-        button:hover { background: #40405c; }
-        button:active { transform: scale(0.96); }
-
-        /* Special Casio Color Coding */
-        button.shift { background: #d97706; color: #fff; font-weight: bold; } /* Shift Yellow */
-        button.alpha { background: #6366f1; color: #fff; font-weight: bold; } /* Alpha Purple */
-        button.mode-btn { background: #b45309; grid-column: span 5; font-size: 14px; padding: 10px; margin-bottom: 4px; font-weight: bold; color: #fff; border-radius: 6px; }
-        button.operator { background: #374151; color: #38bdf8; font-weight: bold; }
-        button.math-op { background: #252536; color: #f472b6; }
-        button.ac-btn { background: #dc2626; color: #fff; font-weight: bold; }
-        button.equal { background: #16a34a; color: #fff; grid-column: span 2; font-weight: bold; }
-
-        /* Modal / Mode Style */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #1a1a26; padding: 20px; border-radius: 10px; width: 370px; max-height: 90vh; overflow-y: auto; border: 2px solid #6366f1; box-shadow: 0 8px 30px rgba(0,0,0,0.7); }
-        .modal-content h3 { margin-bottom: 12px; color: #38bdf8; font-size: 15px; text-align: center; border-bottom: 1px solid #33334d; padding-bottom: 6px; font-family: 'Courier New', Courier, monospace; }
-        .modal-content select, .modal-content input { width: 100%; padding: 9px; margin: 6px 0; background: #12121a; border: 1px solid #6366f1; color: #38bdf8; border-radius: 4px; outline: none; font-size: 13px; font-family: 'Courier New', Courier, monospace; }
-        .modal-content button.action-btn { width: 100%; margin-top: 6px; background: #16a34a; padding: 9px; font-size: 13px; font-weight: bold; border-radius: 4px; border: none; cursor: pointer; color: #fff; }
-        .close-btn { background: #dc2626 !important; margin-top: 10px !important; width: 100%; padding: 8px; border-radius: 4px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
-        
-        .casio-output { 
-            margin-top: 10px; 
-            background: #8fa38f; 
-            color: #0b140b; 
-            padding: 10px; 
-            border-radius: 4px; 
-            font-size: 13px; 
-            font-family: 'Courier New', Courier, monospace;
-            font-weight: bold;
-            word-break: break-all; 
-            line-height: 1.5; 
-            border: 3px inset #525e52;
-            min-height: 50px;
-        }
+        button { padding: 9px 2px; font-size: 11px; cursor: pointer; border: none; border-radius: 4px; background: #2a2a3d; color: #fff; font-weight: 600; }
+        button:active { transform: scale(0.95); }
+        .shift { background: #d97706; }
+        .alpha { background: #6366f1; }
+        .operator { background: #374151; color: #38bdf8; }
+        .ac-btn { background: #dc2626; }
+        .equal { background: #16a34a; grid-column: span 2; }
     </style>
 </head>
 <body>
-
     <div class="calculator">
-        <div class="brand">
-            CASIO <span>fx-991ES PLUS</span>
-        </div>
-
-        <!-- Casio Dual-Line LCD Screen -->
+        <div class="brand">CASIO <span>fx-991ES PLUS (Live)</span></div>
         <div class="lcd-screen">
             <div class="lcd-top" id="lcdTop">NATURAL-V.P.A.M.</div>
             <input type="text" id="display" readonly placeholder="0">
         </div>
-
-        <button class="mode-btn" onclick="openMenu()">MODE / C-FEATURES MENU</button>
-
         <div class="buttons">
-            <!-- Row 1 -->
             <button class="shift">shift</button>
             <button class="alpha">alpha</button>
-            <button class="math-op" onclick="appendValue('Math.sin(')">sin</button>
-            <button class="math-op" onclick="appendValue('Math.cos(')">cos</button>
-            <button class="math-op" onclick="appendValue('Math.tan(')">tan</button>
+            <button onclick="appendValue('Math.sin(')">sin</button>
+            <button onclick="appendValue('Math.cos(')">cos</button>
+            <button onclick="appendValue('Math.tan(')">tan</button>
 
-            <!-- Row 2 -->
-            <button class="math-op" onclick="appendValue('Math.asin(')">sin⁻¹</button>
-            <button class="math-op" onclick="appendValue('Math.acos(')">cos⁻¹</button>
-            <button class="math-op" onclick="appendValue('Math.atan(')">tan⁻¹</button>
-            <button class="math-op" onclick="appendValue('Math.sqrt(')">√</button>
-            <button class="math-op" onclick="appendValue('**2')">x²</button>
-
-            <!-- Row 3 -->
-            <button class="math-op" onclick="appendValue('Math.log10(')">log</button>
-            <button class="math-op" onclick="appendValue('Math.log(')">ln</button>
-            <button class="math-op" onclick="appendValue('**')">x^y</button>
-            <button class="math-op" onclick="appendValue('Math.PI')">π</button>
-            <button class="math-op" onclick="appendValue('Math.E')">e</button>
-
-            <!-- Row 4 -->
-            <button class="math-op" onclick="appendValue('(')">(</button>
-            <button class="math-op" onclick="appendValue(')')">)</button>
-            <button class="operator" onclick="appendValue('/')">÷</button>
-            <button class="operator" onclick="appendValue('*')">×</button>
+            <button onclick="appendValue('Math.sqrt(')">√</button>
+            <button onclick="appendValue('**2')">x²</button>
+            <button onclick="appendValue('**')">x^y</button>
+            <button onclick="appendValue('Math.PI')">π</button>
             <button class="ac-btn" onclick="clearDisplay()">AC</button>
 
-            <!-- Row 5 -->
             <button onclick="appendValue('7')">7</button>
             <button onclick="appendValue('8')">8</button>
             <button onclick="appendValue('9')">9</button>
-            <button class="operator" onclick="appendValue('-')">-</button>
+            <button class="operator" onclick="appendValue('/')">÷</button>
             <button class="operator" onclick="backspace()">⌫</button>
 
-            <!-- Row 6 -->
             <button onclick="appendValue('4')">4</button>
             <button onclick="appendValue('5')">5</button>
             <button onclick="appendValue('6')">6</button>
+            <button class="operator" onclick="appendValue('*')">×</button>
             <button class="operator" onclick="appendValue('+')">+</button>
-            <button class="math-op" onclick="appendValue('ans')">Ans</button>
 
-            <!-- Row 7 -->
             <button onclick="appendValue('1')">1</button>
             <button onclick="appendValue('2')">2</button>
             <button onclick="appendValue('3')">3</button>
+            <button class="operator" onclick="appendValue('-')">-</button>
             <button class="equal" onclick="calculate()">=</button>
 
-            <!-- Row 8 -->
-            <button onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+            <button onclick="appendValue('0')" style="grid-column: span 3;">0</button>
             <button onclick="appendValue('.')">.</button>
-            <button class="math-op" onclick="appendValue('EXP')">EXP</button>
-            <button class="math-op" onclick="calculate()">EXE</button>
-        </div>
-    </div>
-
-    <!-- Advanced Modes Modal -->
-    <div id="menuModal" class="modal">
-        <div class="modal-content">
-            <h3>CASIO ADVANCED MODES</h3>
-            <select id="modeSelect" onchange="switchMode()">
-                <option value="">-- Choose Calculator Mode --</option>
-                <option value="base">1. Base-N (DEC, HEX, OCT, BIN)</option>
-                <option value="quad">2. Equation (Quadratic ax² + bx + c)</option>
-                <option value="stat">3. Statistics (Sum, Mean, SD)</option>
-                <option value="matrix">4. Matrix Addition</option>
-                <option value="vector">5. Vector Dot & Cross</option>
-                <option value="finance">6. Financial Interest</option>
-            </select>
-            <div id="modeBody"></div>
-            <button class="close-btn" onclick="closeMenu()">CLOSE MENU</button>
+            <button onclick="calculate()">EXE</button>
         </div>
     </div>
 
     <script>
         const display = document.getElementById('display');
         const lcdTop = document.getElementById('lcdTop');
-        let lastAns = 0;
-
-        function appendValue(val) { 
-            if(val === 'ans') { display.value += lastAns; }
-            else { display.value += val; }
-        }
-        function clearDisplay() { 
-            display.value = ''; 
-            lcdTop.innerText = 'NATURAL-V.P.A.M.';
-        }
-        function backspace() { 
-            display.value = display.value.slice(0, -1); 
-        }
+        function appendValue(val) { display.value += val; }
+        function clearDisplay() { display.value = ''; lcdTop.innerText = 'NATURAL-V.P.A.M.'; }
+        function backspace() { display.value = display.value.slice(0, -1); }
         function calculate() {
-            try { 
+            try {
                 lcdTop.innerText = display.value + ' =';
                 let res = eval(display.value);
-                if(Number.isFinite(res)) {
-                    lastAns = res;
-                    display.value = res;
-                } else {
-                    display.value = 'Math Error';
-                }
-            } catch (e) { 
-                display.value = 'Syntax Error'; 
-            }
-        }
-
-        function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
-        function closeMenu() { document.getElementById('menuModal').style.display = 'none'; }
-
-        function switchMode() {
-            let mode = document.getElementById('modeSelect').value;
-            let body = document.getElementById('modeBody');
-            body.innerHTML = '';
-
-            if (mode === 'base') {
-                body.innerHTML = `
-                    <input type="number" id="decNum" placeholder="Enter Decimal Number">
-                    <button class="action-btn" onclick="calcBase()">EXE [Convert]</button>
-                    <div class="casio-output" id="baseRes">> Base-N Mode Ready</div>`;
-            } else if (mode === 'quad') {
-                body.innerHTML = `
-                    <input type="number" id="qA" placeholder="Coefficient a">
-                    <input type="number" id="qB" placeholder="Coefficient b">
-                    <input type="number" id="qC" placeholder="Constant c">
-                    <button class="action-btn" onclick="calcQuad()">EXE [Solve Equation]</button>
-                    <div class="casio-output" id="quadRes">> Equation Mode Ready</div>`;
-            } else if (mode === 'stat') {
-                body.innerHTML = `
-                    <input type="text" id="statNums" placeholder="Data (e.g. 10,20,30,40)">
-                    <button class="action-btn" onclick="calcStat()">EXE [Statistics]</button>
-                    <div class="casio-output" id="statRes">> Statistics Mode Ready</div>`;
-            } else if (mode === 'matrix') {
-                body.innerHTML = `
-                    <input type="text" id="matA" placeholder="Matrix A Row (e.g. 1,2)">
-                    <input type="text" id="matB" placeholder="Matrix B Row (e.g. 3,4)">
-                    <button class="action-btn" onclick="calcMatrix()">EXE [Matrix Add]</button>
-                    <div class="casio-output" id="matRes">> Matrix Mode Ready</div>`;
-            } else if (mode === 'vector') {
-                body.innerHTML = `
-                    <input type="text" id="vecA" placeholder="Vector A (e.g. 1,2,3)">
-                    <input type="text" id="vecB" placeholder="Vector B (e.g. 4,5,6)">
-                    <button class="action-btn" onclick="calcVector()">EXE [Vector Op]</button>
-                    <div class="casio-output" id="vecRes">> Vector Mode Ready</div>`;
-            } else if (mode === 'finance') {
-                body.innerHTML = `
-                    <input type="number" id="fP" placeholder="Principal Amount">
-                    <input type="number" id="fR" placeholder="Interest Rate (%)">
-                    <input type="number" id="fT" placeholder="Time Period (Years)">
-                    <button class="action-btn" onclick="calcFinance()">EXE [Interest]</button>
-                    <div class="casio-output" id="financeRes">> Finance Mode Ready</div>`;
-            }
-        }
-
-        function calcBase() {
-            let n = parseInt(document.getElementById('decNum').value);
-            if(isNaN(n)) { document.getElementById('baseRes').innerText = "Error: Invalid Input"; return; }
-            document.getElementById('baseRes').innerHTML = `DEC: ${n}<br>HEX: ${n.toString(16).toUpperCase()}<br>OCT: ${n.toString(8)}<br>BIN: ${n.toString(2)}`;
-        }
-
-        function calcQuad() {
-            let a = parseFloat(document.getElementById('qA').value);
-            let b = parseFloat(document.getElementById('qB').value);
-            let c = parseFloat(document.getElementById('qC').value);
-            if(isNaN(a) || isNaN(b) || isNaN(c)) { document.getElementById('quadRes').innerText = "Error: Missing Values"; return; }
-            let d = b*b - 4*a*c;
-            let res = "";
-            if (d >= 0) {
-                let x1 = (-b + Math.sqrt(d)) / (2*a);
-                let x2 = (-b - Math.sqrt(d)) / (2*a);
-                res = `X1 = ${x1.toFixed(4)}<br>X2 = ${x2.toFixed(4)}`;
-            } else {
-                let real = (-b / (2*a)).toFixed(4);
-                let img = (Math.sqrt(-d) / (2*a)).toFixed(4);
-                res = `X1 = ${real} + ${img}i<br>X2 = ${real} - ${img}i`;
-            }
-            document.getElementById('quadRes').innerHTML = res;
-        }
-
-        function calcStat() {
-            let arr = document.getElementById('statNums').value.split(',').map(Number);
-            if(arr.length === 0 || isNaN(arr[0])) { document.getElementById('statRes').innerText = "Error: Invalid Data"; return; }
-            let sum = arr.reduce((a,b) => a+b, 0);
-            let mean = sum / arr.length;
-            let variance = arr.reduce((a,b) => a + Math.pow(b - mean, 2), 0) / arr.length;
-            let stdDev = Math.sqrt(variance);
-            document.getElementById('statRes').innerHTML = `n = ${arr.length} | Sum = ${sum}<br>Mean = ${mean.toFixed(4)}<br>SD = ${stdDev.toFixed(4)}`;
-        }
-
-        function calcMatrix() {
-            let r1 = document.getElementById('matA').value.split(',').map(Number);
-            let r2 = document.getElementById('matB').value.split(',').map(Number);
-            if(r1.length !== r2.length || isNaN(r1[0])) { document.getElementById('matRes').innerText = "Error: Size Mismatch"; return; }
-            let res = r1.map((val, idx) => val + r2[idx]);
-            document.getElementById('matRes').innerText = `Matrix Ans: [${res.join(', ')}]`;
-        }
-
-        function calcVector() {
-            let v1 = document.getElementById('vecA').value.split(',').map(Number);
-            let v2 = document.getElementById('vecB').value.split(',').map(Number);
-            if(v1.length !== 3 || v2.length !== 3 || isNaN(v1[0])) { document.getElementById('vecRes').innerText = "Error: Use 3D Vectors"; return; }
-            let dot = v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
-            let cross = [
-                v1[1]*v2[2] - v1[2]*v2[1],
-                v1[2]*v2[0] - v1[0]*v2[2],
-                v1[0]*v2[1] - v1[1]*v2[0]
-            ];
-            document.getElementById('vecRes').innerHTML = `Dot = ${dot}<br>Cross = [${cross.join(', ')}]`;
-        }
-
-        function calcFinance() {
-            let p = parseFloat(document.getElementById('fP').value);
-            let r = parseFloat(document.getElementById('fR').value);
-            let t = parseFloat(document.getElementById('fT').value);
-            if(isNaN(p) || isNaN(r) || isNaN(t)) { document.getElementById('financeRes').innerText = "Error: Incomplete Fields"; return; }
-            let si = (p * r * t) / 100;
-            let ci = p * Math.pow((1 + r/100), t) - p;
-            document.getElementById('financeRes').innerHTML = `SI = ${si.toFixed(2)}<br>CI = ${ci.toFixed(2)}`;
+                display.value = Number.isFinite(res) ? res : 'Math Error';
+            } catch(e) { display.value = 'Syntax Error'; }
         }
     </script>
 </body>
