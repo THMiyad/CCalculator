@@ -3,43 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Scientific Calculator Pro</title>
+    <title>Universal Scientific Calculator Pro - v2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #1e1e2f; color: #fff; }
-        .calculator { background: #2b2b40; padding: 20px; border-radius: 16px; box-shadow: 0 10px 35px rgba(0,0,0,0.6); width: 420px; }
-        #display { width: 100%; height: 65px; background: #1a1a26; color: #00ffcc; font-size: 26px; text-align: right; padding: 12px; border: none; border-radius: 8px; margin-bottom: 12px; outline: none; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #151522; color: #fff; }
+        .calculator { background: #252538; padding: 20px; border-radius: 16px; box-shadow: 0 10px 35px rgba(0,0,0,0.7); width: 420px; border: 1px solid #3d3d5c; }
+        #display { width: 100%; height: 65px; background: #12121a; color: #00ffcc; font-size: 26px; text-align: right; padding: 12px; border: none; border-radius: 8px; margin-bottom: 12px; outline: none; }
         .buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-        button { padding: 11px 4px; font-size: 13px; cursor: pointer; border: none; border-radius: 6px; background: #3a3a55; color: #ffffff; font-weight: 600; transition: 0.2s; }
-        button:hover { background: #4e4e75; }
-        button.operator { background: #ff9500; }
-        button.sci { background: #4a4ae2; }
-        button.menu-btn { background: #d97706; grid-column: span 5; font-size: 15px; padding: 12px; margin-bottom: 6px; font-weight: bold; }
-        button.equal { background: #34c759; grid-column: span 2; }
+        button { padding: 11px 4px; font-size: 13px; cursor: pointer; border: none; border-radius: 6px; background: #33334d; color: #ffffff; font-weight: 600; transition: 0.2s; }
+        button:hover { background: #47476b; }
+        button.operator { background: #ff8800; }
+        button.sci { background: #3d3dcc; }
+        button.menu-btn { background: #e68a00; grid-column: span 5; font-size: 15px; padding: 12px; margin-bottom: 6px; font-weight: bold; }
+        button.equal { background: #28a745; grid-column: span 2; }
         
-        /* Classic Calculator Style Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: #232333; padding: 20px; border-radius: 12px; width: 380px; max-height: 90vh; overflow-y: auto; border: 2px solid #3a3a55; box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
-        .modal-content h3 { margin-bottom: 12px; color: #ff9500; font-size: 17px; text-align: center; border-bottom: 1px solid #3a3a55; padding-bottom: 8px; }
-        .modal-content select, .modal-content input { width: 100%; padding: 10px; margin: 8px 0; background: #1a1a26; border: 1px solid #4a4ae2; color: #fff; border-radius: 6px; outline: none; font-size: 14px; }
-        .modal-content button.action-btn { width: 100%; margin-top: 8px; background: #34c759; padding: 10px; font-size: 14px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; color: #fff; }
-        .modal-content button.action-btn:hover { background: #2eb04f; }
-        .close-btn { background: #ff3b30 !important; margin-top: 15px !important; width: 100%; padding: 10px; border-radius: 6px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
+        /* Modal Styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #1e1e2d; padding: 22px; border-radius: 12px; width: 380px; max-height: 90vh; overflow-y: auto; border: 2px solid #3d3dcc; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+        .modal-content h3 { margin-bottom: 12px; color: #ffaa00; font-size: 18px; text-align: center; border-bottom: 1px solid #33334d; padding-bottom: 8px; }
+        .modal-content select, .modal-content input { width: 100%; padding: 10px; margin: 8px 0; background: #12121a; border: 1px solid #3d3dcc; color: #fff; border-radius: 6px; outline: none; font-size: 14px; }
+        .modal-content button.action-btn { width: 100%; margin-top: 8px; background: #28a745; padding: 10px; font-size: 14px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; color: #fff; }
+        .modal-content button.action-btn:hover { background: #218838; }
+        .close-btn { background: #dc3545 !important; margin-top: 15px !important; width: 100%; padding: 10px; border-radius: 6px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
         
-        /* Classic LCD Screen Style Output */
+        /* Classic Calculator Screen Output Style */
         .result-box { 
-            margin-top: 12px; 
-            background: #c2d4c2; 
-            color: #112211; 
-            padding: 12px; 
-            border-radius: 4px; 
+            margin-top: 14px; 
+            background: #b5c7b5; 
+            color: #0d1a0d; 
+            padding: 14px; 
+            border-radius: 6px; 
             font-size: 15px; 
             font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
             word-break: break-all; 
             line-height: 1.6; 
-            border: 2px inset #8fa38f;
-            min-height: 50px;
+            border: 3px inset #7a997a;
+            min-height: 55px;
         }
     </style>
 </head>
@@ -47,7 +47,7 @@
 
     <div class="calculator">
         <input type="text" id="display" readonly>
-        <button class="menu-btn" onclick="openMenu()">☰ Menu / Advanced Modes</button>
+        <button class="menu-btn" onclick="openMenu()">☰ Menu / Advanced Modes (Pro v2)</button>
         <div class="buttons">
             <button class="sci" onclick="appendValue('Math.sin(')">sin</button>
             <button class="sci" onclick="appendValue('Math.cos(')">cos</button>
@@ -96,8 +96,8 @@
         <div class="modal-content">
             <h3>Scientific Calculator Modes</h3>
             <select id="modeSelect" onchange="switchMode()">
-                <option value="">-- Select Mode --</option>
-                <option value="base">1. Base-N (Dec, Hex, Oct, Bin)</option>
+                <option value="">-- Select Advanced Mode --</option>
+                <option value="base">1. Base-N Converter (Dec, Hex, Oct, Bin)</option>
                 <option value="quad">2. Quadratic Equation (ax² + bx + c = 0)</option>
                 <option value="stat">3. Statistics (Sum, Mean, Std Dev)</option>
                 <option value="matrix">4. Matrix Addition</option>
@@ -133,38 +133,38 @@
                 body.innerHTML = `
                     <input type="number" id="decNum" placeholder="Enter Decimal Value">
                     <button class="action-btn" onclick="calcBase()">Calculate</button>
-                    <div class="result-box" id="baseRes">Screen: Ready</div>`;
+                    <div class="result-box" id="baseRes">[ Screen Ready ]</div>`;
             } else if (mode === 'quad') {
                 body.innerHTML = `
-                    <input type="number" id="qA" placeholder="Value of a">
-                    <input type="number" id="qB" placeholder="Value of b">
-                    <input type="number" id="qC" placeholder="Value of c">
+                    <input type="number" id="qA" placeholder="Coefficient a">
+                    <input type="number" id="qB" placeholder="Coefficient b">
+                    <input type="number" id="qC" placeholder="Constant c">
                     <button class="action-btn" onclick="calcQuad()">Calculate</button>
-                    <div class="result-box" id="quadRes">Screen: Ready</div>`;
+                    <div class="result-box" id="quadRes">[ Screen Ready ]</div>`;
             } else if (mode === 'stat') {
                 body.innerHTML = `
-                    <input type="text" id="statNums" placeholder="Data (e.g. 10,20,30,40)">
+                    <input type="text" id="statNums" placeholder="Data separated by comma (e.g. 10,20,30)">
                     <button class="action-btn" onclick="calcStat()">Calculate</button>
-                    <div class="result-box" id="statRes">Screen: Ready</div>`;
+                    <div class="result-box" id="statRes">[ Screen Ready ]</div>`;
             } else if (mode === 'matrix') {
                 body.innerHTML = `
-                    <input type="text" id="matA" placeholder="Matrix Row 1 (e.g. 1,2)">
-                    <input type="text" id="matB" placeholder="Matrix Row 2 (e.g. 3,4)">
+                    <input type="text" id="matA" placeholder="Matrix A Row (e.g. 1,2)">
+                    <input type="text" id="matB" placeholder="Matrix B Row (e.g. 3,4)">
                     <button class="action-btn" onclick="calcMatrix()">Calculate</button>
-                    <div class="result-box" id="matRes">Screen: Ready</div>`;
+                    <div class="result-box" id="matRes">[ Screen Ready ]</div>`;
             } else if (mode === 'vector') {
                 body.innerHTML = `
                     <input type="text" id="vecA" placeholder="Vector A (e.g. 1,2,3)">
                     <input type="text" id="vecB" placeholder="Vector B (e.g. 4,5,6)">
                     <button class="action-btn" onclick="calcVector()">Calculate</button>
-                    <div class="result-box" id="vecRes">Screen: Ready</div>`;
+                    <div class="result-box" id="vecRes">[ Screen Ready ]</div>`;
             } else if (mode === 'finance') {
                 body.innerHTML = `
-                    <input type="number" id="fP" placeholder="Principal">
-                    <input type="number" id="fR" placeholder="Rate (%)">
+                    <input type="number" id="fP" placeholder="Principal Amount">
+                    <input type="number" id="fR" placeholder="Annual Rate (%)">
                     <input type="number" id="fT" placeholder="Time (Years)">
                     <button class="action-btn" onclick="calcFinance()">Calculate</button>
-                    <div class="result-box" id="financeRes">Screen: Ready</div>`;
+                    <div class="result-box" id="financeRes">[ Screen Ready ]</div>`;
             }
         }
 
@@ -236,3 +236,4 @@
     </script>
 </body>
 </html>
+<!-- v2.0-Updated -->
