@@ -7,12 +7,15 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #12121c; color: #fff; }
-        .calculator { background: #1b1b28; padding: 16px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); width: 380px; border: 2px solid #33334d; }
+        .calculator { background: #1b1b28; padding: 16px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); width: 390px; border: 2px solid #33334d; }
         .brand { font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #9ca3af; margin-bottom: 6px; display: flex; justify-content: space-between; }
         
-        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 3px inset #525e52; }
+        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 10px; border-radius: 5px; margin-bottom: 8px; border: 3px inset #525e52; }
         .lcd-top { font-size: 11px; font-family: monospace; min-height: 15px; text-align: right; color: #2d3b2d; }
         #display { width: 100%; height: 38px; background: transparent; color: #0b140b; font-size: 24px; font-family: monospace; font-weight: bold; text-align: right; border: none; outline: none; }
+
+        .menu-btn { background: #b45309; color: #fff; width: 100%; padding: 8px; font-size: 12px; font-weight: bold; border: none; border-radius: 4px; margin-bottom: 8px; cursor: pointer; }
+        .menu-btn:hover { background: #d97706; }
 
         .buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
         button { padding: 9px 2px; font-size: 11px; cursor: pointer; border: none; border-radius: 4px; background: #2a2a3d; color: #fff; font-weight: 600; }
@@ -20,17 +23,30 @@
         .shift { background: #d97706; }
         .alpha { background: #6366f1; }
         .operator { background: #374151; color: #38bdf8; }
-        .ac-btn { background: #dc2626; }
-        .equal { background: #16a34a; grid-column: span 2; }
+        .ac-btn { background: #dc2626; color: #fff; }
+        .equal { background: #16a34a; color: #fff; grid-column: span 2; }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #1a1a26; padding: 18px; border-radius: 10px; width: 360px; max-height: 90vh; overflow-y: auto; border: 2px solid #6366f1; }
+        .modal-content h3 { margin-bottom: 10px; color: #38bdf8; font-size: 14px; text-align: center; border-bottom: 1px solid #33334d; padding-bottom: 5px; font-family: monospace; }
+        .modal-content select, .modal-content input { width: 100%; padding: 8px; margin: 5px 0; background: #12121a; border: 1px solid #6366f1; color: #38bdf8; border-radius: 4px; font-size: 12px; font-family: monospace; outline: none; }
+        .modal-content button.action-btn { width: 100%; margin-top: 5px; background: #16a34a; padding: 8px; font-size: 12px; font-weight: bold; border-radius: 4px; border: none; color: #fff; cursor: pointer; }
+        .close-btn { background: #dc2626 !important; margin-top: 10px !important; width: 100%; padding: 7px; border-radius: 4px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
+        
+        .casio-output { margin-top: 8px; background: #8fa38f; color: #0b140b; padding: 8px; border-radius: 4px; font-size: 12px; font-family: monospace; font-weight: bold; word-break: break-all; border: 2px inset #525e52; min-height: 40px; }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <div class="brand">CASIO <span>fx-991ES PLUS (Live)</span></div>
+        <div class="brand">CASIO <span>fx-991ES PLUS</span></div>
         <div class="lcd-screen">
             <div class="lcd-top" id="lcdTop">NATURAL-V.P.A.M.</div>
             <input type="text" id="display" readonly placeholder="0">
         </div>
+
+        <button class="menu-btn" onclick="openMenu()">MODE / MENU (Base-N, Eqn, Matrix)</button>
+
         <div class="buttons">
             <button class="shift">shift</button>
             <button class="alpha">alpha</button>
@@ -68,6 +84,24 @@
         </div>
     </div>
 
+    <!-- Advanced Modes Modal -->
+    <div id="menuModal" class="modal">
+        <div class="modal-content">
+            <h3>CASIO CALCULATOR MODES</h3>
+            <select id="modeSelect" onchange="switchMode()">
+                <option value="">-- Choose Mode --</option>
+                <option value="base">1. Base-N (DEC, HEX, OCT, BIN)</option>
+                <option value="quad">2. Quadratic Equation (ax² + bx + c)</option>
+                <option value="stat">3. Statistics (Sum, Mean, SD)</option>
+                <option value="matrix">4. Matrix Addition</option>
+                <option value="vector">5. Vector Dot & Cross</option>
+                <option value="finance">6. Financial Interest</option>
+            </select>
+            <div id="modeBody"></div>
+            <button class="close-btn" onclick="closeMenu()">CLOSE MENU</button>
+        </div>
+    </div>
+
     <script>
         const display = document.getElementById('display');
         const lcdTop = document.getElementById('lcdTop');
@@ -80,6 +114,69 @@
                 let res = eval(display.value);
                 display.value = Number.isFinite(res) ? res : 'Math Error';
             } catch(e) { display.value = 'Syntax Error'; }
+        }
+
+        function openMenu() { document.getElementById('menuModal').style.display = 'flex'; }
+        function closeMenu() { document.getElementById('menuModal').style.display = 'none'; }
+
+        function switchMode() {
+            let mode = document.getElementById('modeSelect').value;
+            let body = document.getElementById('modeBody');
+            body.innerHTML = '';
+            if (mode === 'base') {
+                body.innerHTML = `<input type="number" id="decNum" placeholder="Decimal Number"><button class="action-btn" onclick="calcBase()">Convert</button><div class="casio-output" id="baseRes">> Ready</div>`;
+            } else if (mode === 'quad') {
+                body.innerHTML = `<input type="number" id="qA" placeholder="a"><input type="number" id="qB" placeholder="b"><input type="number" id="qC" placeholder="c"><button class="action-btn" onclick="calcQuad()">Solve</button><div class="casio-output" id="quadRes">> Ready</div>`;
+            } else if (mode === 'stat') {
+                body.innerHTML = `<input type="text" id="statNums" placeholder="e.g. 10,20,30"><button class="action-btn" onclick="calcStat()">Calculate</button><div class="casio-output" id="statRes">> Ready</div>`;
+            } else if (mode === 'matrix') {
+                body.innerHTML = `<input type="text" id="matA" placeholder="Row A (1,2)"><input type="text" id="matB" placeholder="Row B (3,4)"><button class="action-btn" onclick="calcMatrix()">Add</button><div class="casio-output" id="matRes">> Ready</div>`;
+            } else if (mode === 'vector') {
+                body.innerHTML = `<input type="text" id="vecA" placeholder="Vec A (1,2,3)"><input type="text" id="vecB" placeholder="Vec B (4,5,6)"><button class="action-btn" onclick="calcVector()">Calculate</button><div class="casio-output" id="vecRes">> Ready</div>`;
+            } else if (mode === 'finance') {
+                body.innerHTML = `<input type="number" id="fP" placeholder="Principal"><input type="number" id="fR" placeholder="Rate %"><input type="number" id="fT" placeholder="Time"><button class="action-btn" onclick="calcFinance()">Calculate</button><div class="casio-output" id="financeRes">> Ready</div>`;
+            }
+        }
+
+        function calcBase() {
+            let n = parseInt(document.getElementById('decNum').value);
+            if(isNaN(n)) { document.getElementById('baseRes').innerText = "Error"; return; }
+            document.getElementById('baseRes').innerHTML = `DEC: ${n}<br>HEX: ${n.toString(16).toUpperCase()}<br>OCT: ${n.toString(8)}<br>BIN: ${n.toString(2)}`;
+        }
+        function calcQuad() {
+            let a = parseFloat(document.getElementById('qA').value), b = parseFloat(document.getElementById('qB').value), c = parseFloat(document.getElementById('qC').value);
+            if(isNaN(a)) { document.getElementById('quadRes').innerText = "Error"; return; }
+            let d = b*b - 4*a*c;
+            if (d >= Image) {
+                let x1 = (-b + Math.sqrt(d))/(2*a), x2 = (-b - Math.sqrt(d))/(2*a);
+                document.getElementById('quadRes').innerHTML = `X1 = ${x1.toFixed(3)}<br>X2 = ${x2.toFixed(3)}`;
+            } else {
+                let real = (-b/(2*a)).toFixed(3), img = (Math.sqrt(-d)/(2*a)).toFixed(3);
+                document.getElementById('quadRes').innerHTML = `X1 = ${real}+${img}i<br>X2 = ${real}-${img}i`;
+            }
+        }
+        function calcStat() {
+            let arr = document.getElementById('statNums').value.split(',').map(Number);
+            let sum = arr.reduce((a,b)=>a+b,0), mean = sum/arr.length;
+            let sd = Math.sqrt(arr.reduce((a,b)=>a+Math.pow(b-mean,2),0)/arr.length);
+            document.getElementById('statRes').innerHTML = `n=${arr.length}, Sum=${sum}<br>Mean=${mean.toFixed(3)}<br>SD=${sd.toFixed(3)}`;
+        }
+        function calcMatrix() {
+            let r1 = document.getElementById('matA').value.split(',').map(Number);
+            let r2 = document.getElementById('matB').value.split(',').map(Number);
+            let res = r1.map((v,i)=>v+r2[i]);
+            document.getElementById('matRes').innerText = `Ans: [${res.join(', ')}]`;
+        }
+        function calcVector() {
+            let v1 = document.getElementById('vecA').value.split(',').map(Number);
+            let v2 = document.getElementById('vecB').value.split(',').map(Number);
+            let dot = v1[0]*v2[0] + v1[1]*v2[1] + v1[2]*v2[2];
+            document.getElementById('vecRes').innerHTML = `Dot Product = ${dot}`;
+        }
+        function calcFinance() {
+            let p = parseFloat(document.getElementById('fP').value), r = parseFloat(document.getElementById('fR').value), t = parseFloat(document.getElementById('fT').value);
+            let si = (p*r*t)/100, ci = p*Math.pow((1+r/100),t)-p;
+            document.getElementById('financeRes').innerHTML = `SI = ${si.toFixed(2)}<br>CI = ${ci.toFixed(2)}`;
         }
     </script>
 </body>
