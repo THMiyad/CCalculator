@@ -3,146 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HiEdu Style Scientific Calculator</title>
+    <title>CASIO fx-991ES PLUS - Ultimate Hybrid</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0f0f17; color: #fff; }
+        body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0e0e13; color: #fff; }
         
-        .calculator { background: #181824; padding: 10px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); width: 390px; border: 2px solid #2a2a3d; }
+        .calculator { background: #16161f; padding: 12px; border-radius: 12px; box-shadow: 0 15px 45px rgba(0,0,0,0.9); width: 400px; border: 2px solid #272738; }
 
-        /* Top Utility Bar (Like App) */
-        .top-utility { display: flex; justify-content: space-between; align-items: center; background: #12121b; padding: 4px 8px; border-radius: 6px; margin-bottom: 6px; font-size: 11px; color: #cbd5e1; }
-        .top-utility span { cursor: pointer; padding: 2px 5px; border-radius: 4px; }
-        .top-utility span:hover { background: #262636; }
+        /* Top Utility Bar (From HiEdu App) */
+        .top-utility { display: flex; justify-content: space-between; align-items: center; background: #101016; padding: 4px 8px; border-radius: 6px; margin-bottom: 6px; font-size: 11px; color: #94a3b8; }
         .pro-badge { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
 
-        /* LCD Screen */
-        .lcd-screen { background: #d4e0d4; color: #111; padding: 8px 10px; border-radius: 4px; margin-bottom: 8px; border: 2px inset #93a393; }
-        .lcd-top { font-size: 10px; font-family: monospace; color: #4a5d4a; min-height: 14px; }
-        #display { width: 100%; height: 34px; background: transparent; color: #111; font-size: 22px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
+        /* Casio LCD Screen */
+        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 8px 10px; border-radius: 4px; margin-bottom: 10px; border: 3px inset #525e52; }
+        .lcd-top { font-size: 10px; font-family: 'Courier New', Courier, monospace; color: #2d3b2d; min-height: 14px; font-weight: bold; }
+        #display { width: 100%; height: 35px; background: transparent; color: #0b140b; font-size: 24px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
 
-        /* Keypad Layout Grid (6 Columns x 9 Rows) */
-        .buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
-        .btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 1px; font-size: 11px; cursor: pointer; border: none; border-radius: 3px; background: #232333; color: #f1f5f9; font-weight: 600; height: 38px; transition: 0.05s; }
+        /* Keypad Grid (6 Columns matching the App & Real Casio combo) */
+        .buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3.5px; }
+        .btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 1px; font-size: 11px; cursor: pointer; border: none; border-radius: 3px; background: #222230; color: #f1f5f9; font-weight: 600; height: 40px; transition: 0.05s; }
         .btn:active { transform: scale(0.93); }
 
-        /* Secondary labels on buttons */
-        .s-text { font-size: 7.5px; color: #facc15; margin-bottom: 1px; line-height: 1; white-space: nowrap; }
-        .a-text { font-size: 7.5px; color: #c084fc; margin-bottom: 1px; line-height: 1; white-space: nowrap; }
+        /* Shift & Alpha Secondary Text Labels */
+        .shift-txt { font-size: 7.5px; color: #f59e0b; margin-bottom: 1px; line-height: 1; white-space: nowrap; }
+        .alpha-txt { font-size: 7.5px; color: #a855f7; margin-bottom: 1px; line-height: 1; white-space: nowrap; }
 
-        /* Specific Key Colors */
-        .shift-key { background: #fbbf24 !important; color: #000 !important; font-weight: bold; }
-        .alpha-key { background: #a855f7 !important; color: #fff !important; font-weight: bold; }
-        .nav-key { background: #2f2f45 !important; color: #94a3b8 !important; }
-        .mode-key { background: #2f2f45 !important; color: #38bdf8 !important; font-size: 9.5px; }
+        /* Real Casio / App Color Scheme */
+        .shift-key { background: #d97706 !important; color: #fff !important; font-weight: bold; }
+        .alpha-key { background: #6366f1 !important; color: #fff !important; font-weight: bold; }
+        .nav-key { background: #2d2d42 !important; color: #cbd5e1 !important; }
+        .mode-key { background: #2d2d42 !important; color: #38bdf8 !important; font-size: 9.5px; }
         .math-op { color: #f472b6; }
         .operator { color: #38bdf8; font-weight: bold; }
-        .del-key { background: #f97316 !important; color: #fff !important; font-weight: bold; }
-        .ac-key { background: #ea580c !important; color: #fff !important; font-weight: bold; }
-        .eq-key { background: #16a34a !important; color: #fff !important; font-weight: bold; font-size: 13px; }
+        .del-key { background: #15803d !important; color: #fff !important; font-weight: bold; }
+        .ac-key { background: #dc2626 !important; color: #fff !important; font-weight: bold; }
+        .eq-key { background: #16a34a !important; color: #fff !important; font-weight: bold; font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div class="calculator">
-        <!-- Top App Menu Bar -->
+        <!-- Top App Utility Bar -->
         <div class="top-utility">
             <span>☰</span>
             <span class="pro-badge">PRO</span>
             <span>∑</span>
             <span>⚙️</span>
             <span>⟳</span>
-            <span style="font-weight: bold; color: #38bdf8;">DEG</span>
+            <span style="font-weight: bold; color: #38bdf8;" id="degMode">DEG</span>
             <span>📷 SCAN</span>
         </div>
 
-        <!-- LCD Display -->
+        <!-- LCD Screen -->
         <div class="lcd-screen">
             <div class="lcd-top" id="lcdTop">NORM MATH FRAC</div>
             <input type="text" id="display" readonly placeholder="0">
         </div>
 
-        <!-- Buttons Grid -->
+        <!-- Buttons Grid (Casio + App Hybrid) -->
         <div class="buttons">
             <!-- Row 1 -->
-            <button class="btn shift-key" id="shiftBtn" onclick="toggleShift()" style="grid-column: span 1;">SHIFT</button>
+            <button class="btn shift-key" id="shiftBtn" onclick="toggleShift()">SHIFT</button>
             <button class="btn alpha-key" id="alphaBtn" onclick="toggleAlpha()">ALPHA</button>
-            <button class="btn nav-key" onclick="appendValue('LEFT')">◀</button>
-            <button class="btn nav-key" onclick="appendValue('RIGHT')">▶</button>
-            <button class="btn mode-key" onclick="appendValue('MODE')">MODE</button>
-            <button class="btn mode-key" onclick="appendValue('2nd')">2nd</button>
+            <button class="btn nav-key" onclick="appendNav('◀')">◀</button>
+            <button class="btn nav-key" onclick="appendNav('▶')">▶</button>
+            <button class="btn mode-key" onclick="setMode('MODE')">MODE</button>
+            <button class="btn mode-key" onclick="setMode('2nd')">2nd</button>
 
             <!-- Row 2 -->
-            <button class="btn" onclick="pressKey('CALC', 'SOLVE=', '')"><span class="s-text">SOLVE=</span>CALC</button>
-            <button class="btn" onclick="pressKey('Math.imul(', 'd/dx', '')"><span class="s-text">d/dx</span>∫dx</button>
-            <button class="btn nav-key" onclick="pressKey('', '▲', '')"><span class="s-text"></span>▲</button>
-            <button class="btn nav-key" onclick="pressKey('', '▼', '')"><span class="s-text"></span>▼</button>
-            <button class="btn" onclick="pressKey('1/', 'x!', '')"><span class="s-text">x!</span>x⁻¹</button>
-            <button class="btn" onclick="pressKey('Math.pow(', '∑', '')"><span class="s-text">∑</span>Logᵧx</button>
+            <button class="btn" onclick="pressKey('CALC', 'SOLVE=', '')"><span class="shift-txt">SOLVE=</span>CALC</button>
+            <button class="btn" onclick="pressKey('Math.imul(', 'd/dx', '')"><span class="shift-txt">d/dx</span>∫dx</button>
+            <button class="btn nav-key" onclick="appendNav('▲')"><span class="shift-txt"></span>▲</button>
+            <button class="btn nav-key" onclick="appendNav('▼')"><span class="shift-txt"></span>▼</button>
+            <button class="btn" onclick="pressKey('1/', 'x!', '')"><span class="shift-txt">x!</span>x⁻¹</button>
+            <button class="btn" onclick="pressKey('Math.pow(', '∑', '')"><span class="shift-txt">∑</span>Logᵧx</button>
 
             <!-- Row 3 -->
-            <button class="btn" onclick="pressKey('', 'x/y', '')"><span class="s-text">x/y</span>xᵞ/ᵣ</button>
-            <button class="btn" onclick="pressKey('Math.cbrt(', '³√', '')"><span class="s-text">³√</span>³√</button>
-            <button class="btn" onclick="pressKey('**3', 'x³', '')"><span class="s-text">x³</span>x³</button>
-            <button class="btn" onclick="pressKey('Math.sqrt(', 'ᵞ√', '')"><span class="s-text">ᵞ√</span>ᵞ√</button>
-            <button class="btn" onclick="pressKey('10**', '10ˣ', '')"><span class="s-text">10ˣ</span>10ˣ</button>
-            <button class="btn" onclick="pressKey('Math.exp(', 'eˣ', '')"><span class="s-text">eˣ</span>eˣ</button>
+            <button class="btn" onclick="pressKey('', 'x/y', '')"><span class="shift-txt">x/y</span>xᵞ/ᵣ</button>
+            <button class="btn" onclick="pressKey('Math.cbrt(', '³√', '')"><span class="shift-txt">³√</span>³√</button>
+            <button class="btn" onclick="pressKey('**3', 'x³', '')"><span class="shift-txt">x³</span>x³</button>
+            <button class="btn" onclick="pressKey('Math.sqrt(', 'ᵞ√', '')"><span class="shift-txt">ᵞ√</span>ᵞ√</button>
+            <button class="btn" onclick="pressKey('10**', '10ˣ', '')"><span class="shift-txt">10ˣ</span>10ˣ</button>
+            <button class="btn" onclick="pressKey('Math.exp(', 'eˣ', '')"><span class="shift-txt">eˣ</span>eˣ</button>
 
             <!-- Row 4 -->
-            <button class="btn math-op" onclick="pressKey('(', '<', '')"><span class="s-text">&lt;</span>(</button>
-            <button class="btn math-op" onclick="pressKey('Math.sqrt(', 'FACT', '')"><span class="s-text">FACT</span>√</button>
-            <button class="btn math-op" onclick="pressKey('**2', '²√', '')"><span class="s-text">²√</span>x²</button>
-            <button class="btn math-op" onclick="pressKey('Math.pow(', 'xʸ', '')"><span class="s-text">xʸ</span>xʸ</button>
-            <button class="btn math-op" onclick="pressKey('Math.log10(', 'Log', '')"><span class="s-text">Log</span>Log</button>
-            <button class="btn math-op" onclick="pressKey('Math.log(', 'Ln', '')"><span class="s-text">Ln</span>Ln</button>
+            <button class="btn math-op" onclick="pressKey('(', '<', '')"><span class="shift-txt">&lt;</span>(</button>
+            <button class="btn math-op" onclick="pressKey('Math.sqrt(', 'FACT', '')"><span class="shift-txt">FACT</span>√</button>
+            <button class="btn math-op" onclick="pressKey('**2', '²√', '')"><span class="shift-txt">²√</span>x²</button>
+            <button class="btn math-op" onclick="pressKey('Math.pow(', 'xʸ', '')"><span class="shift-txt">xʸ</span>xʸ</button>
+            <button class="btn math-op" onclick="pressKey('Math.log10(', 'Log', '')"><span class="shift-txt">Log</span>Log</button>
+            <button class="btn math-op" onclick="pressKey('Math.log(', 'Ln', '')"><span class="shift-txt">Ln</span>Ln</button>
 
             <!-- Row 5 -->
-            <button class="btn math-op" onclick="pressKey('(-)', 'STO', 'a')"><span class="s-text">STO</span><span class="a-text">a</span>(-)</button>
-            <button class="btn math-op" onclick="pressKey('°\'\"', 'CLRv', 'b')"><span class="s-text">CLRv</span><span class="a-text">b</span>°'\"</button>
-            <button class="btn math-op" onclick="pressKey('Math.hypot(', 'i', 'c')"><span class="s-text">i</span><span class="a-text">c</span>hyp</button>
-            <button class="btn math-op" onclick="pressKey('Math.sin(', 'Sin⁻¹', 'd')"><span class="s-text">Sin⁻¹</span><span class="a-text">d</span>Sin</button>
-            <button class="btn math-op" onclick="pressKey('Math.cos(', 'Cos⁻¹', 'e')"><span class="s-text">Cos⁻¹</span><span class="a-text">e</span>Cos</button>
-            <button class="btn math-op" onclick="pressKey('Math.tan(', 'Tan⁻¹', 'f')"><span class="s-text">Tan⁻¹</span><span class="a-text">f</span>Tan</button>
+            <button class="btn math-op" onclick="pressKey('(-)', 'STO', 'a')"><span class="shift-txt">STO</span><span class="alpha-txt">a</span>(-)</button>
+            <button class="btn math-op" onclick="pressKey('°\'\"', 'CLRv', 'b')"><span class="shift-txt">CLRv</span><span class="alpha-txt">b</span>°'\"</button>
+            <button class="btn math-op" onclick="pressKey('Math.hypot(', 'i', 'c')"><span class="shift-txt">i</span><span class="alpha-txt">c</span>hyp</button>
+            <button class="btn math-op" onclick="pressKey('Math.sin(', 'Sin⁻¹', 'd')"><span class="shift-txt">Sin⁻¹</span><span class="alpha-txt">d</span>Sin</button>
+            <button class="btn math-op" onclick="pressKey('Math.cos(', 'Cos⁻¹', 'e')"><span class="shift-txt">Cos⁻¹</span><span class="alpha-txt">e</span>Cos</button>
+            <button class="btn math-op" onclick="pressKey('Math.tan(', 'Tan⁻¹', 'f')"><span class="shift-txt">Tan⁻¹</span><span class="alpha-txt">f</span>Tan</button>
 
             <!-- Row 6 -->
-            <button class="btn math-op" onclick="pressKey('RCL', 'CONST', '')"><span class="s-text">CONST</span>RCL</button>
-            <button class="btn math-op" onclick="pressKey('ENG', 'CONV', '')"><span class="s-text">CONV</span>ENG</button>
-            <button class="btn math-op" onclick="pressKey('(', 'SI', '')"><span class="s-text">SI</span>(</button>
-            <button class="btn math-op" onclick="pressKey(')', 'Limit', '')"><span class="s-text">Limit</span>)</button>
-            <button class="btn math-op" onclick="toggleSD()"><span class="s-text">x→y</span>S⇄D</button>
-            <button class="btn math-op" onclick="pressKey('M-', 'M-', 'm')"><span class="s-text">M-</span><span class="a-text">m</span>M-</button>
+            <button class="btn math-op" onclick="pressKey('RCL', 'CONST', '')"><span class="shift-txt">CONST</span>RCL</button>
+            <button class="btn math-op" onclick="pressKey('ENG', 'CONV', '')"><span class="shift-txt">CONV</span>ENG</button>
+            <button class="btn math-op" onclick="pressKey('(', 'SI', '')"><span class="shift-txt">SI</span>(</button>
+            <button class="btn math-op" onclick="pressKey(')', 'Limit', '')"><span class="shift-txt">Limit</span>)</button>
+            <button class="btn math-op" onclick="toggleSD()"><span class="shift-txt">x→y</span>S⇄D</button>
+            <button class="btn math-op" onclick="pressKey('M-', 'M-', 'm')"><span class="shift-txt">M-</span><span class="alpha-txt">m</span>M-</button>
 
             <!-- Row 7 -->
-            <button class="btn" onclick="pressKey('7', 'MATRIX', 'A')"><span class="s-text">MATRIX</span><span class="a-text">A</span>7</button>
-            <button class="btn" onclick="pressKey('8', 'VECTOR', 'B')"><span class="s-text">VECTOR</span><span class="a-text">B</span>8</button>
-            <button class="btn" onclick="pressKey('9', 'FUNC', 'C')"><span class="s-text">FUNC</span><span class="a-text">C</span>9</button>
-            <button class="btn del-key" onclick="backspace()"><span class="s-text">nPr</span>⌫</button>
-            <button class="btn del-key" onclick="pressKey('', 'GCD', '')"><span class="s-text">GCD</span></button>
-            <button class="btn ac-key" onclick="clearDisplay()"><span class="s-text">CLR</span>AC</button>
+            <button class="btn" onclick="pressKey('7', 'MATRIX', 'A')"><span class="shift-txt">MATRIX</span><span class="alpha-txt">A</span>7</button>
+            <button class="btn" onclick="pressKey('8', 'VECTOR', 'B')"><span class="shift-txt">VECTOR</span><span class="alpha-txt">B</span>8</button>
+            <button class="btn" onclick="pressKey('9', 'FUNC', 'C')"><span class="shift-txt">FUNC</span><span class="alpha-txt">C</span>9</button>
+            <button class="btn del-key" onclick="backspace()"><span class="shift-txt">nPr</span>⌫</button>
+            <button class="btn del-key" onclick="pressKey('', 'GCD', '')"><span class="shift-txt">GCD</span>DEL</button>
+            <button class="btn ac-key" onclick="clearDisplay()"><span class="shift-txt">CLR</span>AC</button>
 
             <!-- Row 8 -->
-            <button class="btn" onclick="pressKey('4', 'STAT', 'D')"><span class="s-text">STAT</span><span class="a-text">D</span>4</button>
-            <button class="btn" onclick="pressKey('5', 'CMPLX', 'E')"><span class="s-text">CMPLX</span><span class="a-text">E</span>5</button>
-            <button class="btn" onclick="pressKey('6', 'DISTR', 'F')"><span class="s-text">DISTR</span><span class="a-text">F</span>6</button>
-            <button class="btn operator" onclick="pressKey('*', 'Pol', '')"><span class="s-text">Pol</span>×</button>
-            <button class="btn operator" onclick="pressKey('Ceil', 'Ceil', '')"><span class="s-text">Ceil</span></button>
-            <button class="btn operator" onclick="pressKey('/', 'nCr', '')"><span class="s-text">nCr</span>÷</button>
+            <button class="btn" onclick="pressKey('4', 'STAT', 'D')"><span class="shift-txt">STAT</span><span class="alpha-txt">D</span>4</button>
+            <button class="btn" onclick="pressKey('5', 'CMPLX', 'E')"><span class="shift-txt">CMPLX</span><span class="alpha-txt">E</span>5</button>
+            <button class="btn" onclick="pressKey('6', 'DISTR', 'F')"><span class="shift-txt">DISTR</span><span class="alpha-txt">F</span>6</button>
+            <button class="btn operator" onclick="pressKey('*', 'Pol', '')"><span class="shift-txt">Pol</span>×</button>
+            <button class="btn operator" onclick="pressKey('Ceil', 'Ceil', '')"><span class="shift-txt">Ceil</span></button>
+            <button class="btn operator" onclick="pressKey('/', 'nCr', '')"><span class="shift-txt">nCr</span>÷</button>
 
             <!-- Row 9 -->
-            <button class="btn" onclick="pressKey('1', 'COPY', 'X')"><span class="s-text">COPY</span><span class="a-text">X</span>1</button>
-            <button class="btn" onclick="pressKey('2', 'PASTE', 'Y')"><span class="s-text">PASTE</span><span class="a-text">Y</span>2</button>
-            <button class="btn" onclick="pressKey('3', 'Ran#', 'M')"><span class="s-text">Ran#</span><span class="a-text">M</span>3</button>
-            <button class="btn operator" onclick="pressKey('+', 'PreAns', '')"><span class="s-text">PreAns</span>+</button>
-            <button class="btn operator" onclick="pressKey('-', 'History', '')"><span class="s-text">History</span>-</button>
-            <button class="btn operator" onclick="pressKey('0', 'Exp', '')"><span class="s-text">Exp</span>0</button>
+            <button class="btn" onclick="pressKey('1', 'COPY', 'X')"><span class="shift-txt">COPY</span><span class="alpha-txt">X</span>1</button>
+            <button class="btn" onclick="pressKey('2', 'PASTE', 'Y')"><span class="shift-txt">PASTE</span><span class="alpha-txt">Y</span>2</button>
+            <button class="btn" onclick="pressKey('3', 'Ran#', 'M')"><span class="shift-txt">Ran#</span><span class="alpha-txt">M</span>3</button>
+            <button class="btn operator" onclick="pressKey('+', 'PreAns', '')"><span class="shift-txt">PreAns</span>+</button>
+            <button class="btn operator" onclick="pressKey('-', 'History', '')"><span class="shift-txt">History</span>-</button>
+            <button class="btn operator" onclick="pressKey('0', 'Exp', '')"><span class="shift-txt">Exp</span>0</button>
 
-            <!-- Row 10 (Bottom Extra) -->
+            <!-- Row 10 -->
             <button class="btn" onclick="pressKey('0', '', '')" style="grid-column: span 2;">0</button>
-            <button class="btn" onclick="pressKey('.', 'RanInt', '')"><span class="s-text">RanInt</span>.</button>
-            <button class="btn math-op" onclick="pressKey('Math.PI', 'π', '')"><span class="s-text">π</span>π</button>
-            <button class="btn math-op" onclick="pressKey('Math.E', 'e', '')"><span class="s-text">e</span>e</button>
-            <button class="btn math-op" onclick="pressKey('ans', 'Ans', '')"><span class="s-text">Ans</span>Ans</button>
-            <button class="btn eq-key" onclick="calculate()" style="grid-column: span 1;">=</button>
+            <button class="btn" onclick="pressKey('.', 'RanInt', '')"><span class="shift-txt">RanInt</span>.</button>
+            <button class="btn math-op" onclick="pressKey('Math.PI', 'π', '')"><span class="shift-txt">π</span>π</button>
+            <button class="btn math-op" onclick="pressKey('Math.E', 'e', '')"><span class="shift-txt">e</span>e</button>
+            <button class="btn math-op" onclick="pressKey('ans', 'Ans', '')"><span class="shift-txt">Ans</span>Ans</button>
+            <button class="btn eq-key" onclick="calculate()">=</button>
         </div>
     </div>
 
@@ -159,19 +157,17 @@
         function toggleShift() {
             isShift = !isShift;
             isAlpha = false;
-            shiftBtn.style.background = isShift ? '#fff' : '#fbbf24';
-            shiftBtn.style.color = isShift ? '#000' : '#000';
-            alphaBtn.style.background = '#a855f7';
-            lcdTop.innerText = isShift ? 'SHIFT ACTIVE (NORM MATH FRAC)' : 'NORM MATH FRAC';
+            shiftBtn.style.background = isShift ? '#ffaa00' : '#d97706';
+            alphaBtn.style.background = '#6366f1';
+            lcdTop.innerText = isShift ? 'SHIFT (NORM MATH FRAC)' : 'NORM MATH FRAC';
         }
 
         function toggleAlpha() {
             isAlpha = !isAlpha;
             isShift = false;
-            alphaBtn.style.background = '#fff';
-            alphaBtn.style.color = '#000';
-            shiftBtn.style.background = '#fbbf24';
-            lcdTop.innerText = isAlpha ? 'ALPHA ACTIVE (NORM MATH FRAC)' : 'NORM MATH FRAC';
+            alphaBtn.style.background = '#818cf8';
+            shiftBtn.style.background = '#d97706';
+            lcdTop.innerText = isAlpha ? 'ALPHA (NORM MATH FRAC)' : 'NORM MATH FRAC';
         }
 
         function pressKey(normalVal, shiftVal, alphaVal) {
@@ -179,13 +175,13 @@
                 if (shiftVal) display.value += shiftVal;
                 else display.value += normalVal;
                 isShift = false;
-                shiftBtn.style.background = '#fbbf24';
+                shiftBtn.style.background = '#d97706';
                 lcdTop.innerText = 'NORM MATH FRAC';
             } else if (isAlpha) {
                 if (alphaVal) display.value += alphaVal;
                 else display.value += normalVal;
                 isAlpha = false;
-                alphaBtn.style.background = '#a855f7';
+                alphaBtn.style.background = '#6366f1';
                 lcdTop.innerText = 'NORM MATH FRAC';
             } else {
                 if (normalVal === 'ans') display.value += lastAns;
@@ -193,12 +189,12 @@
             }
         }
 
-        function appendValue(val) {
-            if (val === 'MODE' || val === '2nd' || val === 'LEFT' || val === 'RIGHT') {
-                lcdTop.innerText = 'Mode: ' + val;
-                return;
-            }
-            display.value += val;
+        function appendNav(dir) {
+            lcdTop.innerText = 'Cursor: ' + dir;
+        }
+
+        function setMode(modeName) {
+            lcdTop.innerText = 'Mode Setup: ' + modeName;
         }
 
         function toggleSD() {
@@ -210,8 +206,8 @@
             display.value = '';
             lcdTop.innerText = 'NORM MATH FRAC';
             isShift = false; isAlpha = false;
-            shiftBtn.style.background = '#fbbf24';
-            alphaBtn.style.background = '#a855f7';
+            shiftBtn.style.background = '#d97706';
+            alphaBtn.style.background = '#6366f1';
         }
 
         function backspace() {
