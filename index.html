@@ -8,227 +8,110 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0e0e13; color: #fff; }
         
-        .calculator { background: #16161f; padding: 12px; border-radius: 12px; box-shadow: 0 15px 45px rgba(0,0,0,0.9); width: 410px; border: 2px solid #272738; }
+        .calculator { background: #16161f; padding: 15px; border-radius: 12px; box-shadow: 0 15px 45px rgba(0,0,0,0.9); width: 400px; border: 2px solid #272738; }
 
-        /* Casio LCD Screen */
-        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 8px 10px; border-radius: 4px; margin-bottom: 10px; border: 3px inset #525e52; }
-        .lcd-top { font-size: 10px; font-family: 'Courier New', Courier, monospace; color: #2d3b2d; min-height: 14px; font-weight: bold; }
-        #display { width: 100%; height: 35px; background: transparent; color: #0b140b; font-size: 22px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
+        /* Screen Design */
+        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 10px; border-radius: 6px; margin-bottom: 12px; border: 3px inset #525e52; }
+        .lcd-top { font-size: 11px; font-family: 'Courier New', Courier, monospace; color: #2d3b2d; min-height: 16px; font-weight: bold; margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        #display { width: 100%; height: 40px; background: transparent; color: #0b140b; font-size: 24px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
 
-        /* Keypad Grid */
-        .buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3.5px; }
-        .btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 1px; font-size: 11px; cursor: pointer; border: none; border-radius: 3px; background: #222230; color: #f1f5f9; font-weight: 600; height: 40px; transition: 0.05s; }
-        .btn:active { transform: scale(0.93); }
+        /* Keypad Grid (5 Columns) */
+        .buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+        .btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 2px; font-size: 13px; cursor: pointer; border: none; border-radius: 4px; background: #222230; color: #f1f5f9; font-weight: 600; height: 42px; transition: 0.05s; }
+        .btn:active { transform: scale(0.93); background: #323246; }
 
-        /* Shift & Alpha Labels */
-        .shift-txt { font-size: 7.5px; color: #f59e0b; margin-bottom: 1px; line-height: 1; white-space: nowrap; }
-        .alpha-txt { font-size: 7.5px; color: #a855f7; margin-bottom: 1px; line-height: 1; white-space: nowrap; }
-
-        /* Color Coding */
+        /* Color Scheme */
         .shift-key { background: #d97706 !important; color: #fff !important; font-weight: bold; }
-        .alpha-key { background: #6366f1 !important; color: #fff !important; font-weight: bold; }
-        .nav-key { background: #2d2d42 !important; color: #cbd5e1 !important; }
-        .mode-key { background: #2d2d42 !important; color: #38bdf8 !important; font-size: 9.5px; }
         .math-op { color: #f472b6; }
         .operator { color: #38bdf8; font-weight: bold; }
-        .del-key { background: #15803d !important; color: #fff !important; font-weight: bold; }
         .ac-key { background: #dc2626 !important; color: #fff !important; font-weight: bold; }
-        .eq-key { background: #16a34a !important; color: #fff !important; font-weight: bold; font-size: 14px; }
+        .del-key { background: #15803d !important; color: #fff !important; font-weight: bold; }
+        .eq-key { background: #16a34a !important; color: #fff !important; font-weight: bold; font-size: 16px; grid-column: span 2; }
     </style>
 </head>
 <body>
 
     <div class="calculator">
+        <!-- Screen -->
         <div class="lcd-screen">
-            <div class="lcd-top" id="lcdTop">NORM MATH FRAC</div>
+            <div class="lcd-top" id="lcdTop">MATH</div>
             <input type="text" id="display" readonly placeholder="0">
         </div>
 
+        <!-- Keypad -->
         <div class="buttons">
-            <button class="btn shift-key" id="shiftBtn" onclick="toggleShift()">SHIFT</button>
-            <button class="btn alpha-key" id="alphaBtn" onclick="toggleAlpha()">ALPHA</button>
-            <button class="btn nav-key" onclick="appendNav('◀')">◀</button>
-            <button class="btn nav-key" onclick="appendNav('▶')">▶</button>
-            <button class="btn mode-key" onclick="setMode('MODE')">MODE</button>
-            <button class="btn mode-key" onclick="setMode('SETUP')">SETUP</button>
+            <button class="btn shift-key" onclick="clearDisplay()">AC</button>
+            <button class="btn del-key" onclick="backspace()">DEL</button>
+            <button class="btn math-op" onclick="appendValue('(')">(</button>
+            <button class="btn math-op" onclick="appendValue(')')">)</button>
+            <button class="btn operator" onclick="appendValue('/')">÷</button>
 
-            <button class="btn" onclick="insertText('CALC')"><span class="shift-txt">SOLVE=</span>CALC</button>
-            <button class="btn" onclick="insertText('∫(')"><span class="shift-txt">d/dx</span>∫dx</button>
-            <button class="btn nav-key" onclick="appendNav('▲')">▲</button>
-            <button class="btn nav-key" onclick="appendNav('▼')">▼</button>
-            <button class="btn" onclick="insertText('^(-1)')"><span class="shift-txt">x!</span>x⁻¹</button>
-            <button class="btn" onclick="insertText('log_')"><span class="shift-txt">∑</span>Logᵧx</button>
+            <button class="btn" onclick="appendValue('7')">7</button>
+            <button class="btn" onclick="appendValue('8')">8</button>
+            <button class="btn" onclick="appendValue('9')">9</button>
+            <button class="btn math-op" onclick="appendValue('Math.sqrt(')">√</button>
+            <button class="btn operator" onclick="appendValue('*')">×</button>
 
-            <button class="btn" onclick="insertText('/')"><span class="shift-txt">x/y</span>xᵞ/ᵣ</button>
-            <button class="btn" onclick="insertText('cbrt(')"><span class="shift-txt">³√</span>³√</button>
-            <button class="btn" onclick="insertText('^3')"><span class="shift-txt">x³</span>x³</button>
-            <button class="btn" onclick="insertText('root(')"><span class="shift-txt">ᵞ√</span>ⁿ√</button>
-            <button class="btn" onclick="insertText('10^(')"><span class="shift-txt">10ˣ</span>10ˣ</button>
-            <button class="btn" onclick="insertText('exp(')"><span class="shift-txt">eˣ</span>eˣ</button>
+            <button class="btn" onclick="appendValue('4')">4</button>
+            <button class="btn" onclick="appendValue('5')">5</button>
+            <button class="btn" onclick="appendValue('6')">6</button>
+            <button class="btn math-op" onclick="appendValue('**2')">x²</button>
+            <button class="btn operator" onclick="appendValue('-')">-</button>
 
-            <button class="btn math-op" onclick="insertText('(')"><span class="shift-txt">&lt;</span>(</button>
-            <button class="btn math-op" onclick="insertText('sqrt(')"><span class="shift-txt">FACT</span>√</button>
-            <button class="btn math-op" onclick="insertText('^2')"><span class="shift-txt">²√</span>x²</button>
-            <button class="btn math-op" onclick="insertText('^')"><span class="shift-txt">xʸ</span>xʸ</button>
-            <button class="btn math-op" onclick="insertText('log10(')"><span class="shift-txt">Log</span>Log</button>
-            <button class="btn math-op" onclick="insertText('log(')"><span class="shift-txt">Ln</span>Ln</button>
+            <button class="btn" onclick="appendValue('1')">1</button>
+            <button class="btn" onclick="appendValue('2')">2</button>
+            <button class="btn" onclick="appendValue('3')">3</button>
+            <button class="btn math-op" onclick="appendValue('**')">xʸ</button>
+            <button class="btn operator" onclick="appendValue('+')">+</button>
 
-            <button class="btn math-op" onclick="insertText('(-)')"><span class="shift-txt">STO</span><span class="alpha-txt">A</span>(-)</button>
-            <button class="btn math-op" onclick="insertText('°')"><span class="shift-txt">CLRv</span><span class="alpha-txt">B</span>°'\"</button>
-            <button class="btn math-op" onclick="insertText('hyp(')"><span class="shift-txt">i</span><span class="alpha-txt">C</span>hyp</button>
-            <button class="btn math-op" onclick="insertText('sin(')"><span class="shift-txt">Sin⁻¹</span><span class="alpha-txt">D</span>Sin</button>
-            <button class="btn math-op" onclick="insertText('cos(')"><span class="shift-txt">Cos⁻¹</span><span class="alpha-txt">E</span>Cos</button>
-            <button class="btn math-op" onclick="insertText('tan(')"><span class="shift-txt">Tan⁻¹</span><span class="alpha-txt">F</span>Tan</button>
-
-            <button class="btn math-op" onclick="insertText('RCL')"><span class="shift-txt">CONST</span>RCL</button>
-            <button class="btn math-op" onclick="insertText('ENG')"><span class="shift-txt">CONV</span>ENG</button>
-            <button class="btn math-op" onclick="insertText('(')"><span class="shift-txt">SI</span>(</button>
-            <button class="btn math-op" onclick="insertText(')')"><span class="shift-txt">Limit</span>)</button>
-            <button class="btn math-op" onclick="toggleSD()"><span class="shift-txt">x→y</span>S⇄D</button>
-            <button class="btn math-op" onclick="insertText('M-')"><span class="shift-txt">M-</span><span class="alpha-txt">M</span>M-</button>
-
-            <button class="btn" onclick="insertText('7')"><span class="shift-txt">MATRIX</span><span class="alpha-txt">A</span>7</button>
-            <button class="btn" onclick="insertText('8')"><span class="shift-txt">VECTOR</span><span class="alpha-txt">B</span>8</button>
-            <button class="btn" onclick="insertText('9')"><span class="shift-txt">FUNC</span><span class="alpha-txt">C</span>9</button>
-            <button class="btn del-key" onclick="backspace()"><span class="shift-txt">nPr</span>DEL</button>
-            <button class="btn del-key" onclick="insertText('GCD(')"><span class="shift-txt">GCD</span>GCD</button>
-            <button class="btn ac-key" onclick="clearDisplay()"><span class="shift-txt">CLR</span>AC</button>
-
-            <button class="btn" onclick="insertText('4')"><span class="shift-txt">STAT</span><span class="alpha-txt">D</span>4</button>
-            <button class="btn" onclick="pressKey('5')"><span class="shift-txt">CMPLX</span><span class="alpha-txt">E</span>5</button>
-            <button class="btn" onclick="insertText('6')"><span class="shift-txt">DISTR</span><span class="alpha-txt">F</span>6</button>
-            <button class="btn operator" onclick="insertText('*')"><span class="shift-txt">Pol</span>×</button>
-            <button class="btn operator" onclick="insertText('ceil(')"><span class="shift-txt">Ceil</span>Ceil</button>
-            <button class="btn operator" onclick="insertText('/')"><span class="shift-txt">nCr</span>÷</button>
-
-            <button class="btn" onclick="insertText('1')"><span class="shift-txt">COPY</span><span class="alpha-txt">X</span>1</button>
-            <button class="btn" onclick="insertText('2')"><span class="shift-txt">PASTE</span><span class="alpha-txt">Y</span>2</button>
-            <button class="btn" onclick="insertText('3')"><span class="shift-txt">Ran#</span><span class="alpha-txt">M</span>3</button>
-            <button class="btn operator" onclick="insertText('+')"><span class="shift-txt">PreAns</span>+</button>
-            <button class="btn operator" onclick="insertText('-')"><span class="shift-txt">History</span>-</button>
-            <button class="btn operator" onclick="insertText('E')"><span class="shift-txt">Exp</span>0</button>
-
-            <button class="btn" onclick="insertText('0')" style="grid-column: span 2;">0</button>
-            <button class="btn" onclick="insertText('.')"><span class="shift-txt">RanInt</span>.</button>
-            <button class="btn math-op" onclick="insertText('π')"><span class="shift-txt">π</span>π</button>
-            <button class="btn math-op" onclick="insertText('e')"><span class="shift-txt">e</span>e</button>
-            <button class="btn math-op" onclick="insertText('Ans')"><span class="shift-txt">Ans</span>Ans</button>
+            <button class="btn" onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+            <button class="btn" onclick="appendValue('.')">.</button>
+            <button class="btn math-op" onclick="appendValue('Math.PI')">π</button>
+            
             <button class="btn eq-key" onclick="calculate()">=</button>
+            
+            <!-- Extra Scientific Functions -->
+            <button class="btn math-op" onclick="appendValue('Math.sin(')">sin</button>
+            <button class="btn math-op" onclick="appendValue('Math.cos(')">cos</button>
+            <button class="btn math-op" onclick="appendValue('Math.tan(')">tan</button>
+            <button class="btn math-op" onclick="appendValue('Math.log10(')">log</button>
+            <button class="btn math-op" onclick="appendValue('Math.log(')">ln</button>
         </div>
     </div>
 
     <script>
-        // Service Worker for Offline caching
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', e => {
-                    e.waitUntil(caches.open('calc-v6').then(cache => cache.addAll(['./'])));
-                });
-                self.addEventListener('fetch', e => {
-                    e.respondWith(caches.match(e.request).then(res => res || fetch(e.request)));
-                });
-            `;
-            const blob = new Blob([swCode], {type: 'application/javascript'});
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
-        }
-
         const display = document.getElementById('display');
         const lcdTop = document.getElementById('lcdTop');
-        const shiftBtn = document.getElementById('shiftBtn');
-        const alphaBtn = document.getElementById('alphaBtn');
-        
-        let lastAns = 0;
-        let isShift = false;
-        let isAlpha = false;
+        let currentExpression = '';
 
-        function toggleShift() {
-            isShift = !isShift;
-            isAlpha = false;
-            shiftBtn.style.background = isShift ? '#ffaa00' : '#d97706';
-            alphaBtn.style.background = '#6366f1';
-            lcdTop.innerText = isShift ? 'SHIFT (NORM MATH FRAC)' : 'NORM MATH FRAC';
-        }
-
-        function toggleAlpha() {
-            isAlpha = !isAlpha;
-            isShift = false;
-            alphaBtn.style.background = '#818cf8';
-            shiftBtn.style.background = '#d97706';
-            lcdTop.innerText = isAlpha ? 'ALPHA (NORM MATH FRAC)' : 'NORM MATH FRAC';
-        }
-
-        function insertText(val) {
-            if (isShift) {
-                isShift = false;
-                shiftBtn.style.background = '#d97706';
-            } else if (isAlpha) {
-                isAlpha = false;
-                alphaBtn.style.background = '#6366f1';
-            }
-            display.value += val;
-        }
-
-        function pressKey(val) {
-            insertText(val);
-        }
-
-        function appendNav(dir) {
-            lcdTop.innerText = 'Cursor: ' + dir;
-        }
-
-        function setMode(modeName) {
-            lcdTop.innerText = 'Mode: ' + modeName;
-        }
-
-        function toggleSD() {
-            let num = parseFloat(display.value);
-            if (!isNaN(num)) display.value = (1 / num).toFixed(4);
+        function appendValue(val) {
+            currentExpression += val;
+            display.value = currentExpression;
         }
 
         function clearDisplay() {
+            currentExpression = '';
             display.value = '';
-            lcdTop.innerText = 'NORM MATH FRAC';
-            isShift = false; isAlpha = false;
-            shiftBtn.style.background = '#d97706';
-            alphaBtn.style.background = '#6366f1';
+            lcdTop.innerText = 'MATH';
         }
 
         function backspace() {
-            display.value = display.value.slice(0, -1);
+            currentExpression = currentExpression.slice(0, -1);
+            display.value = currentExpression;
         }
 
         function calculate() {
             try {
-                let expr = display.value;
-                lcdTop.innerText = expr + ' =';
-                
-                // Safe and accurate mathematical expression translation for calculation
-                let safeExpr = expr
-                    .replace(/Ans/g, lastAns)
-                    .replace(/π/g, 'Math.PI')
-                    .replace(/e/g, 'Math.E')
-                    .replace(/sqrt\(/g, 'Math.sqrt(')
-                    .replace(/cbrt\(/g, 'Math.cbrt(')
-                    .replace(/exp\(/g, 'Math.exp(')
-                    .replace(/log10\(/g, 'Math.log10(')
-                    .replace(/log\(/g, 'Math.log(')
-                    .replace(/sin\(/g, 'Math.sin(')
-                    .replace(/cos\(/g, 'Math.sin(') // handled safely or standard Math.cos
-                    .replace(/tan\(/g, 'Math.tan(')
-                    .replace(/ceil\(/g, 'Math.ceil(');
-
-                // Correcting cosine replacement typo if any
-                safeExpr = safeExpr.replace(/Math\.sin\(([^)]+)\) \*/g, ''); // safeguard
-                // Clean replacement for standard eval
-                let finalRes = Function('"use strict";return (' + safeExpr.replace(/cos\(/g, 'Math.cos(').replace(/sin\(/g, 'Math.sin(') + ')')();
-
-                if (Number.isFinite(finalRes)) {
-                    lastAns = finalRes;
-                    display.value = finalRes;
+                lcdTop.innerText = display.value + ' =';
+                // Safe evaluation of the math expression
+                let result = eval(currentExpression);
+                if (Number.isFinite(result)) {
+                    display.value = result;
+                    currentExpression = result.toString();
                 } else {
                     display.value = 'Math Error';
                 }
-            } catch (e) {
+            } catch (error) {
                 display.value = 'Syntax Error';
             }
         }
