@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CASIO fx-991ES PLUS - Offline Pro</title>
+    <title>CASIO fx-991ES PLUS</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0e0e13; color: #fff; }
         
-        .calculator { background: #16161f; padding: 12px; border-radius: 12px; box-shadow: 0 15px 45px rgba(0,0,0,0.9); width: 400px; border: 2px solid #272738; }
-
-        /* Top Clean Utility Bar */
-        .top-utility { display: flex; justify-content: space-between; align-items: center; background: #101016; padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-size: 11px; color: #94a3b8; }
-        .offline-badge { background: #059669; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+        .calculator { background: #16161f; padding: 10px; border-radius: 10px; box-shadow: 0 15px 45px rgba(0,0,0,0.9); width: 400px; border: 2px solid #272738; }
 
         /* Casio LCD Screen */
-        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 8px 10px; border-radius: 4px; margin-bottom: 10px; border: 3px inset #525e52; }
+        .lcd-screen { background: #8fa38f; color: #0b140b; padding: 8px 10px; border-radius: 4px; margin-bottom: 8px; border: 3px inset #525e52; }
         .lcd-top { font-size: 10px; font-family: 'Courier New', Courier, monospace; color: #2d3b2d; min-height: 14px; font-weight: bold; }
         #display { width: 100%; height: 35px; background: transparent; color: #0b140b; font-size: 22px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
 
@@ -43,12 +39,6 @@
 <body>
 
     <div class="calculator">
-        <!-- Top Utility Bar -->
-        <div class="top-utility">
-            <span style="font-weight: bold; color: #38bdf8;">CASIO fx-991ES PLUS</span>
-            <span class="offline-badge">100% OFFLINE</span>
-        </div>
-
         <!-- LCD Screen -->
         <div class="lcd-screen">
             <div class="lcd-top" id="lcdTop">NORM MATH FRAC</div>
@@ -77,7 +67,7 @@
             <button class="btn" onclick="pressKey('÷', 'x/y')"><span class="shift-txt">x/y</span>xᵞ/ᵣ</button>
             <button class="btn" onclick="pressKey('∛(', '³√')"><span class="shift-txt">³√</span>³√</button>
             <button class="btn" onclick="pressKey('³', 'x³')"><span class="shift-txt">x³</span>x³</button>
-            <button class="btn" onclick="pressKey('ⁿ√(', 'ᵞ√')"><span class="shift-txt">ᵞ√</span>ᵞ√</button>
+            <button class="btn" onclick="pressKey('rootN(', 'ᵞ√')"><span class="shift-txt">ᵞ√</span>ⁿ√</button>
             <button class="btn" onclick="pressKey('10^(', '10ˣ')"><span class="shift-txt">10ˣ</span>10ˣ</button>
             <button class="btn" onclick="pressKey('e^(', 'eˣ')"><span class="shift-txt">eˣ</span>eˣ</button>
 
@@ -144,7 +134,7 @@
         if ('serviceWorker' in navigator) {
             const swCode = `
                 self.addEventListener('install', e => {
-                    e.waitUntil(caches.open('calc-v3').then(cache => cache.addAll(['./'])));
+                    e.waitUntil(caches.open('calc-v4').then(cache => cache.addAll(['./'])));
                 });
                 self.addEventListener('fetch', e => {
                     e.respondWith(caches.match(e.request).then(res => res || fetch(e.request)));
@@ -225,7 +215,10 @@
                 let expr = display.value;
                 lcdTop.innerText = expr + ' =';
                 
-                // Convert symbols to valid JS Math syntax
+                // Handle nth root conversion (e.g., 3rootN(8) -> Math.pow(8, 1/3))
+                expr = expr.replace(/([0-9.]+)rootN\(([^)]+)\)/g, 'Math.pow($2, 1/$1)');
+                
+                // Convert other symbols to valid JS Math syntax
                 expr = expr.replace(/Ans/g, lastAns)
                            .replace(/π/g, 'Math.PI')
                            .replace(/e(?!\()/g, 'Math.E')
