@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CASIO fx-991ES PLUS - Ultimate Hybrid</title>
+    <title>CASIO fx-991ES PLUS - Offline Pro</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #0e0e13; color: #fff; }
         
         .calculator { background: #16161f; padding: 12px; border-radius: 12px; box-shadow: 0 15px 45px rgba(0,0,0,0.9); width: 400px; border: 2px solid #272738; }
 
-        /* Top Utility Bar (From HiEdu App) */
-        .top-utility { display: flex; justify-content: space-between; align-items: center; background: #101016; padding: 4px 8px; border-radius: 6px; margin-bottom: 6px; font-size: 11px; color: #94a3b8; }
-        .pro-badge { background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 1px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; }
+        /* Top Clean Utility Bar */
+        .top-utility { display: flex; justify-content: space-between; align-items: center; background: #101016; padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-size: 11px; color: #94a3b8; }
+        .offline-badge { background: #059669; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
 
         /* Casio LCD Screen */
         .lcd-screen { background: #8fa38f; color: #0b140b; padding: 8px 10px; border-radius: 4px; margin-bottom: 10px; border: 3px inset #525e52; }
         .lcd-top { font-size: 10px; font-family: 'Courier New', Courier, monospace; color: #2d3b2d; min-height: 14px; font-weight: bold; }
         #display { width: 100%; height: 35px; background: transparent; color: #0b140b; font-size: 24px; font-family: 'Courier New', Courier, monospace; font-weight: bold; text-align: right; border: none; outline: none; }
 
-        /* Keypad Grid (6 Columns matching the App & Real Casio combo) */
+        /* Keypad Grid (6 Columns) */
         .buttons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3.5px; }
         .btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 1px; font-size: 11px; cursor: pointer; border: none; border-radius: 3px; background: #222230; color: #f1f5f9; font-weight: 600; height: 40px; transition: 0.05s; }
         .btn:active { transform: scale(0.93); }
@@ -43,34 +43,24 @@
 <body>
 
     <div class="calculator">
-        <!-- Top App Utility Bar -->
         <div class="top-utility">
-            <span>☰</span>
-            <span class="pro-badge">PRO</span>
-            <span>∑</span>
-            <span>⚙️</span>
-            <span>⟳</span>
-            <span style="font-weight: bold; color: #38bdf8;" id="degMode">DEG</span>
-            <span>📷 SCAN</span>
+            <span style="font-weight: bold; color: #38bdf8;">CASIO fx-991ES PLUS</span>
+            <span class="offline-badge">100% OFFLINE</span>
         </div>
 
-        <!-- LCD Screen -->
         <div class="lcd-screen">
             <div class="lcd-top" id="lcdTop">NORM MATH FRAC</div>
             <input type="text" id="display" readonly placeholder="0">
         </div>
 
-        <!-- Buttons Grid (Casio + App Hybrid) -->
         <div class="buttons">
-            <!-- Row 1 -->
             <button class="btn shift-key" id="shiftBtn" onclick="toggleShift()">SHIFT</button>
             <button class="btn alpha-key" id="alphaBtn" onclick="toggleAlpha()">ALPHA</button>
             <button class="btn nav-key" onclick="appendNav('◀')">◀</button>
             <button class="btn nav-key" onclick="appendNav('▶')">▶</button>
             <button class="btn mode-key" onclick="setMode('MODE')">MODE</button>
-            <button class="btn mode-key" onclick="setMode('2nd')">2nd</button>
+            <button class="btn mode-key" onclick="setMode('SETUP')">SETUP</button>
 
-            <!-- Row 2 -->
             <button class="btn" onclick="pressKey('CALC', 'SOLVE=', '')"><span class="shift-txt">SOLVE=</span>CALC</button>
             <button class="btn" onclick="pressKey('Math.imul(', 'd/dx', '')"><span class="shift-txt">d/dx</span>∫dx</button>
             <button class="btn nav-key" onclick="appendNav('▲')"><span class="shift-txt"></span>▲</button>
@@ -78,7 +68,6 @@
             <button class="btn" onclick="pressKey('1/', 'x!', '')"><span class="shift-txt">x!</span>x⁻¹</button>
             <button class="btn" onclick="pressKey('Math.pow(', '∑', '')"><span class="shift-txt">∑</span>Logᵧx</button>
 
-            <!-- Row 3 -->
             <button class="btn" onclick="pressKey('', 'x/y', '')"><span class="shift-txt">x/y</span>xᵞ/ᵣ</button>
             <button class="btn" onclick="pressKey('Math.cbrt(', '³√', '')"><span class="shift-txt">³√</span>³√</button>
             <button class="btn" onclick="pressKey('**3', 'x³', '')"><span class="shift-txt">x³</span>x³</button>
@@ -86,7 +75,6 @@
             <button class="btn" onclick="pressKey('10**', '10ˣ', '')"><span class="shift-txt">10ˣ</span>10ˣ</button>
             <button class="btn" onclick="pressKey('Math.exp(', 'eˣ', '')"><span class="shift-txt">eˣ</span>eˣ</button>
 
-            <!-- Row 4 -->
             <button class="btn math-op" onclick="pressKey('(', '<', '')"><span class="shift-txt">&lt;</span>(</button>
             <button class="btn math-op" onclick="pressKey('Math.sqrt(', 'FACT', '')"><span class="shift-txt">FACT</span>√</button>
             <button class="btn math-op" onclick="pressKey('**2', '²√', '')"><span class="shift-txt">²√</span>x²</button>
@@ -94,31 +82,27 @@
             <button class="btn math-op" onclick="pressKey('Math.log10(', 'Log', '')"><span class="shift-txt">Log</span>Log</button>
             <button class="btn math-op" onclick="pressKey('Math.log(', 'Ln', '')"><span class="shift-txt">Ln</span>Ln</button>
 
-            <!-- Row 5 -->
-            <button class="btn math-op" onclick="pressKey('(-)', 'STO', 'a')"><span class="shift-txt">STO</span><span class="alpha-txt">a</span>(-)</button>
-            <button class="btn math-op" onclick="pressKey('°\'\"', 'CLRv', 'b')"><span class="shift-txt">CLRv</span><span class="alpha-txt">b</span>°'\"</button>
-            <button class="btn math-op" onclick="pressKey('Math.hypot(', 'i', 'c')"><span class="shift-txt">i</span><span class="alpha-txt">c</span>hyp</button>
-            <button class="btn math-op" onclick="pressKey('Math.sin(', 'Sin⁻¹', 'd')"><span class="shift-txt">Sin⁻¹</span><span class="alpha-txt">d</span>Sin</button>
-            <button class="btn math-op" onclick="pressKey('Math.cos(', 'Cos⁻¹', 'e')"><span class="shift-txt">Cos⁻¹</span><span class="alpha-txt">e</span>Cos</button>
-            <button class="btn math-op" onclick="pressKey('Math.tan(', 'Tan⁻¹', 'f')"><span class="shift-txt">Tan⁻¹</span><span class="alpha-txt">f</span>Tan</button>
+            <button class="btn math-op" onclick="pressKey('(-)', 'STO', 'A')"><span class="shift-txt">STO</span><span class="alpha-txt">A</span>(-)</button>
+            <button class="btn math-op" onclick="pressKey('°\'\"', 'CLRv', 'B')"><span class="shift-txt">CLRv</span><span class="alpha-txt">B</span>°'\"</button>
+            <button class="btn math-op" onclick="pressKey('Math.hypot(', 'i', 'C')"><span class="shift-txt">i</span><span class="alpha-txt">C</span>hyp</button>
+            <button class="btn math-op" onclick="pressKey('Math.sin(', 'Sin⁻¹', 'D')"><span class="shift-txt">Sin⁻¹</span><span class="alpha-txt">D</span>Sin</button>
+            <button class="btn math-op" onclick="pressKey('Math.cos(', 'Cos⁻¹', 'E')"><span class="shift-txt">Cos⁻¹</span><span class="alpha-txt">E</span>Cos</button>
+            <button class="btn math-op" onclick="pressKey('Math.tan(', 'Tan⁻¹', 'F')"><span class="shift-txt">Tan⁻¹</span><span class="alpha-txt">F</span>Tan</button>
 
-            <!-- Row 6 -->
             <button class="btn math-op" onclick="pressKey('RCL', 'CONST', '')"><span class="shift-txt">CONST</span>RCL</button>
             <button class="btn math-op" onclick="pressKey('ENG', 'CONV', '')"><span class="shift-txt">CONV</span>ENG</button>
             <button class="btn math-op" onclick="pressKey('(', 'SI', '')"><span class="shift-txt">SI</span>(</button>
             <button class="btn math-op" onclick="pressKey(')', 'Limit', '')"><span class="shift-txt">Limit</span>)</button>
             <button class="btn math-op" onclick="toggleSD()"><span class="shift-txt">x→y</span>S⇄D</button>
-            <button class="btn math-op" onclick="pressKey('M-', 'M-', 'm')"><span class="shift-txt">M-</span><span class="alpha-txt">m</span>M-</button>
+            <button class="btn math-op" onclick="pressKey('M-', 'M-', 'M')"><span class="shift-txt">M-</span><span class="alpha-txt">M</span>M-</button>
 
-            <!-- Row 7 -->
             <button class="btn" onclick="pressKey('7', 'MATRIX', 'A')"><span class="shift-txt">MATRIX</span><span class="alpha-txt">A</span>7</button>
             <button class="btn" onclick="pressKey('8', 'VECTOR', 'B')"><span class="shift-txt">VECTOR</span><span class="alpha-txt">B</span>8</button>
             <button class="btn" onclick="pressKey('9', 'FUNC', 'C')"><span class="shift-txt">FUNC</span><span class="alpha-txt">C</span>9</button>
-            <button class="btn del-key" onclick="backspace()"><span class="shift-txt">nPr</span>⌫</button>
-            <button class="btn del-key" onclick="pressKey('', 'GCD', '')"><span class="shift-txt">GCD</span>DEL</button>
+            <button class="btn del-key" onclick="backspace()"><span class="shift-txt">nPr</span>DEL</button>
+            <button class="btn del-key" onclick="pressKey('', 'GCD', '')"><span class="shift-txt">GCD</span></button>
             <button class="btn ac-key" onclick="clearDisplay()"><span class="shift-txt">CLR</span>AC</button>
 
-            <!-- Row 8 -->
             <button class="btn" onclick="pressKey('4', 'STAT', 'D')"><span class="shift-txt">STAT</span><span class="alpha-txt">D</span>4</button>
             <button class="btn" onclick="pressKey('5', 'CMPLX', 'E')"><span class="shift-txt">CMPLX</span><span class="alpha-txt">E</span>5</button>
             <button class="btn" onclick="pressKey('6', 'DISTR', 'F')"><span class="shift-txt">DISTR</span><span class="alpha-txt">F</span>6</button>
@@ -126,7 +110,6 @@
             <button class="btn operator" onclick="pressKey('Ceil', 'Ceil', '')"><span class="shift-txt">Ceil</span></button>
             <button class="btn operator" onclick="pressKey('/', 'nCr', '')"><span class="shift-txt">nCr</span>÷</button>
 
-            <!-- Row 9 -->
             <button class="btn" onclick="pressKey('1', 'COPY', 'X')"><span class="shift-txt">COPY</span><span class="alpha-txt">X</span>1</button>
             <button class="btn" onclick="pressKey('2', 'PASTE', 'Y')"><span class="shift-txt">PASTE</span><span class="alpha-txt">Y</span>2</button>
             <button class="btn" onclick="pressKey('3', 'Ran#', 'M')"><span class="shift-txt">Ran#</span><span class="alpha-txt">M</span>3</button>
@@ -134,7 +117,6 @@
             <button class="btn operator" onclick="pressKey('-', 'History', '')"><span class="shift-txt">History</span>-</button>
             <button class="btn operator" onclick="pressKey('0', 'Exp', '')"><span class="shift-txt">Exp</span>0</button>
 
-            <!-- Row 10 -->
             <button class="btn" onclick="pressKey('0', '', '')" style="grid-column: span 2;">0</button>
             <button class="btn" onclick="pressKey('.', 'RanInt', '')"><span class="shift-txt">RanInt</span>.</button>
             <button class="btn math-op" onclick="pressKey('Math.PI', 'π', '')"><span class="shift-txt">π</span>π</button>
@@ -145,6 +127,20 @@
     </div>
 
     <script>
+        // Service Worker for 100% Offline Support
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                self.addEventListener('install', e => {
+                    e.waitUntil(caches.open('calc-v2').then(cache => cache.addAll(['./'])));
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(caches.match(e.request).then(res => res || fetch(e.request)));
+                });
+            `;
+            const blob = new Blob([swCode], {type: 'application/javascript'});
+            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+        }
+
         const display = document.getElementById('display');
         const lcdTop = document.getElementById('lcdTop');
         const shiftBtn = document.getElementById('shiftBtn');
